@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form K — Notice of Tenant's Responsibilities</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fff;--bg2:#f7f6f3;--bg3:#f0efe9;
+  --bgs:#eaf3de;--bgw:#faeeda;--bgi:#e6f1fb;--bgd:#fcebeb;
+  --t:#1a1a18;--t2:#6b6b67;--t3:#9a9994;
+  --ts:#3b6d11;--tw:#854f0b;--td:#a32d2d;--ti:#185fa5;
+  --b:rgba(26,26,24,.13);--bm:rgba(26,26,24,.22);--bs:rgba(26,26,24,.35);
+  --brs:rgba(59,109,17,.28);--brw:rgba(133,79,11,.28);
+  --brd:rgba(163,45,45,.28);--bri:rgba(24,95,165,.28);
+  --rm:8px;--rl:12px;
+  --font:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+  --mono:'SF Mono','Fira Code',Consolas,monospace;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1c1c1a;--bg2:#242422;--bg3:#2c2c2a;
+  --bgs:#173404;--bgw:#412402;--bgi:#042c53;--bgd:#501313;
+  --t:#f0efe9;--t2:#9a9994;--t3:#6b6b67;
+  --ts:#c0dd97;--tw:#fac775;--td:#f09595;--ti:#85b7eb;
+  --b:rgba(240,239,233,.1);--bm:rgba(240,239,233,.2);--bs:rgba(240,239,233,.32);
+  --brs:rgba(192,221,151,.22);--brw:rgba(250,199,117,.22);
+  --brd:rgba(240,149,149,.22);--bri:rgba(133,183,235,.22);
+}}
+body{font-family:var(--font);font-size:14px;color:var(--t);background:var(--bg3);min-height:100vh;padding:2rem 1rem}
+.app{max-width:720px;margin:0 auto}
+.strata-hd{background:var(--bg);border:.5px solid var(--b);border-radius:var(--rl);padding:1.25rem 1.5rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.strata-hd h2{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.strata-hd p{font-size:12px;color:var(--t2);margin-top:3px}
+.strata-hd .plan{font-size:13px;font-weight:600;font-family:var(--mono);text-align:right}
+.strata-hd .act{font-size:11px;color:var(--t3);text-align:right;margin-top:2px}
+.form-hd{background:var(--bg);border:.5px solid var(--b);border-radius:var(--rl);padding:1rem 1.5rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.form-hd h1{font-size:16px;font-weight:600;letter-spacing:-.01em}
+.form-hd p{font-size:12px;color:var(--t2);margin-top:2px}
+.hbadge{font-size:11px;background:var(--bg2);border:.5px solid var(--b);border-radius:20px;padding:3px 10px;color:var(--t2);white-space:nowrap}
+.tabs{display:flex;background:var(--bg);border:.5px solid var(--b);border-radius:var(--rm);overflow:hidden;margin-bottom:1rem}
+.tab{flex:1;padding:9px 6px;font-size:12px;cursor:pointer;background:transparent;border:none;color:var(--t2);font-family:var(--font);transition:background .15s,color .15s;text-align:center}
+.tab.active{background:var(--bg2);color:var(--t);font-weight:500}
+.tab:not(:last-child){border-right:.5px solid var(--b)}
+.sec{display:none}.sec.active{display:block}
+.card{background:var(--bg);border:.5px solid var(--b);border-radius:var(--rl);padding:1.25rem;margin-bottom:1rem}
+.ct{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g1{display:grid;grid-template-columns:1fr;gap:12px}
+.mt{margin-top:12px}
+.fld{display:flex;flex-direction:column;gap:5px}
+.fld label{font-size:12px;color:var(--t2);font-weight:500}
+.fld input,.fld textarea{font-size:14px;padding:9px 11px;border:.5px solid var(--bm);border-radius:var(--rm);background:var(--bg);color:var(--t);width:100%;outline:none;transition:border-color .15s;font-family:var(--font)}
+.fld input:focus,.fld textarea:focus{border-color:var(--bs)}
+.fld input::placeholder{color:var(--t3)}
+.fld input[type=password]{letter-spacing:.1em}
+.tblock{background:var(--bg2);border:.5px solid var(--b);border-radius:var(--rl);padding:1rem;margin-bottom:10px}
+.tblock-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.tnum{font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.05em}
+.tog-row{display:flex;align-items:center;gap:12px;padding:8px 0}
+.tog-lbl{font-size:13px;font-weight:500}
+.rg{display:flex;gap:8px}
+.rb{padding:6px 14px;font-size:13px;border-radius:var(--rm);cursor:pointer;border:.5px solid var(--bm);background:transparent;color:var(--t2);font-family:var(--font);transition:all .15s}
+.rb.active{background:var(--t);color:var(--bg);border-color:transparent;font-weight:500}
+.pet-row{display:grid;grid-template-columns:1fr 80px auto;gap:10px;align-items:end;margin-bottom:8px;padding:10px;background:var(--bg2);border-radius:var(--rm)}
+.notice{background:var(--bg2);border-left:3px solid var(--bm);padding:14px 16px;border-radius:0 var(--rm) var(--rm) 0;font-size:13px;color:var(--t2);line-height:1.65}
+.notice strong{color:var(--t);font-weight:600}
+.sw{border:.5px dashed var(--bm);border-radius:var(--rm);overflow:hidden}
+.sl{font-size:11px;color:var(--t3);padding:8px 10px 4px}
+canvas{display:block;cursor:crosshair;width:100%;height:110px;touch-action:none;background:var(--bg)}
+.sb{display:flex;align-items:center;gap:8px;padding:7px 10px;border-top:.5px solid var(--b);background:var(--bg2)}
+.sst{font-size:12px;color:var(--t3)}.sst.ok{color:var(--ts);font-weight:500}
+.ci{display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--bg2);border-radius:var(--rm);margin-bottom:8px;cursor:pointer}
+.ci input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:1px;accent-color:var(--t);cursor:pointer}
+.ci label{font-size:13px;color:var(--t2);line-height:1.5;cursor:pointer}
+.ci label a{color:var(--ti);font-weight:500}
+.ci.chk{background:var(--bgs)}.ci.chk label{color:var(--ts)}
+.btn{padding:8px 16px;font-size:13px;border-radius:var(--rm);cursor:pointer;transition:background .15s,opacity .15s;border:.5px solid var(--bm);background:transparent;color:var(--t);font-family:var(--font)}
+.btn:hover{background:var(--bg2)}.btn:disabled{opacity:.5;cursor:default}
+.bsm{padding:5px 10px;font-size:12px}
+.bp{background:var(--t);color:var(--bg);border-color:transparent;font-weight:500}
+.bp:hover{opacity:.82;background:var(--t)}
+.bd{color:var(--td);border-color:var(--brd)}.bd:hover{background:var(--bgd)}
+.bg{border:.5px dashed var(--bm);color:var(--t2);font-size:12px;padding:6px 14px}
+.bg:hover{background:var(--bg2);color:var(--t)}
+.acts{display:flex;gap:8px;justify-content:flex-end;margin-top:1rem}
+.al{border-radius:var(--rm);padding:12px 16px;font-size:13px;margin-bottom:1rem;display:none;line-height:1.5}
+.al a{font-weight:600;text-decoration:none}
+.aok{background:var(--bgs);border:.5px solid var(--brs);color:var(--ts)}.aok a{color:var(--ts)}
+.aer{background:var(--bgd);border:.5px solid var(--brd);color:var(--td)}
+.aw{background:var(--bgw);border:.5px solid var(--brw);color:var(--tw)}.aw a{color:var(--tw)}
+.req{color:var(--td);margin-left:1px}
+.steps{display:flex;align-items:flex-start;margin-bottom:1.5rem}
+.si{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
+.si:not(:last-child)::after{content:'';position:absolute;top:13px;left:55%;width:90%;height:1px;background:var(--b)}
+.sd{width:26px;height:26px;border-radius:50%;border:.5px solid var(--bm);background:var(--bg2);color:var(--t2);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+.sd.active{background:var(--t);color:var(--bg);border-color:transparent}
+.sd.done{background:var(--bgs);color:var(--ts);border-color:var(--brs)}
+.slb{font-size:10px;color:var(--t3);margin-top:5px;text-align:center}
+.slb.active{color:var(--t);font-weight:500}
+.mrow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem}
+.met{background:var(--bg);border:.5px solid var(--b);border-radius:var(--rl);padding:14px;text-align:center}
+.mn{font-size:26px;font-weight:600;letter-spacing:-.02em}.ml{font-size:11px;color:var(--t2);margin-top:3px}
+.sbg{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.bok{background:var(--bgs);color:var(--ts)}.bw{background:var(--bgw);color:var(--tw)}
+.ch{display:grid;grid-template-columns:1.4fr 1fr auto;gap:8px;font-size:11px;color:var(--t2);font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding-bottom:8px;border-bottom:.5px solid var(--b);margin-bottom:4px}
+.sr{display:grid;grid-template-columns:1.4fr 1fr auto;gap:8px;align-items:center;padding:10px 0;border-bottom:.5px solid var(--b);font-size:13px}
+.sr:last-child{border-bottom:none}
+.sn{font-weight:500}.sdt{font-size:11px;color:var(--t2);margin-top:2px}
+.emp{text-align:center;padding:2.5rem 1rem;color:var(--t3);font-size:13px;line-height:1.6}
+.ecard{background:var(--bg);border:.5px solid var(--b);border-radius:var(--rl);padding:1.25rem;margin-bottom:1rem;display:none}
+.el{font-size:12px;font-family:var(--mono);background:var(--bg2);border-radius:var(--rm);padding:12px;line-height:1.9;color:var(--t);word-break:break-all;white-space:pre-wrap;max-height:160px;overflow-y:auto}
+.cbtn{padding:5px 12px;font-size:11px;border-radius:var(--rm);cursor:pointer;border:.5px solid var(--bm);background:transparent;color:var(--t2);font-family:var(--font)}
+.cbtn:hover{background:var(--bg2)}
+.ss{display:flex;gap:14px;margin-bottom:18px;align-items:flex-start}
+.sn2{width:26px;height:26px;border-radius:50%;background:var(--t);color:var(--bg);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.sb2 strong{font-weight:600;display:block;margin-bottom:4px;font-size:13px}
+.sb2 p{font-size:12px;color:var(--t2);line-height:1.65}
+.sb2 a{color:var(--ti);text-decoration:none}.sb2 a:hover{text-decoration:underline}
+code{font-family:var(--mono);font-size:11px;background:var(--bg2);padding:2px 5px;border-radius:4px}
+.ft{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;border:.5px solid var(--b);overflow:hidden}
+.ft th{text-align:left;padding:6px 10px;background:var(--bg2);font-weight:600;font-size:11px;color:var(--t2)}
+.ft td{padding:6px 10px;border-top:.5px solid var(--b)}
+.ft td:first-child{font-family:var(--mono);font-size:11px}
+.ft td:last-child{color:var(--t2)}
+.div{height:.5px;background:var(--b);margin:18px 0}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid var(--bm);border-top-color:currentColor;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:560px){
+  body{padding:1rem .5rem}.g2{grid-template-columns:1fr}
+  .strata-hd{flex-direction:column;gap:8px}
+  .tab{font-size:10px;padding:8px 3px}
+  .mrow{grid-template-columns:1fr 1fr}
+  .ch,.sr{grid-template-columns:1fr auto}
+  .ch span:nth-child(2),.sr>div:nth-child(2){display:none}
+  .pet-row{grid-template-columns:1fr auto}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="strata-hd">
+  <div><h2>Strata Corporation EPS87</h2><p>700 Center Street, Revelstoke, BC &nbsp;V0E 2S1</p></div>
+  <div><div class="plan">EPS87</div><div class="act">Strata Property Act, s.146</div></div>
+</div>
+
+<div class="form-hd">
+  <div><h1>Form K — Notice of tenant's responsibilities</h1><p>To be completed by owner and signed by all tenants and owner</p></div>
+  <span class="hbadge" id="connTag">Not connected</span>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('owner')">Owner form</button>
+  <button class="tab" onclick="showTab('tenant')">Tenant signing</button>
+  <button class="tab" onclick="showTab('countersign')">Countersign</button>
+  <button class="tab" onclick="showTab('submissions')">Submissions</button>
+  <button class="tab" onclick="showTab('setup')">Setup</button>
+</div>
+
+<!-- OWNER FORM -->
+<div id="owner" class="sec active">
+  <div class="steps">
+    <div class="si"><div class="sd active">1</div><div class="slb active">Owner fills</div></div>
+    <div class="si"><div class="sd">2</div><div class="slb">Tenants sign</div></div>
+    <div class="si"><div class="sd">3</div><div class="slb">Owner countersigns</div></div>
+    <div class="si"><div class="sd">4</div><div class="slb">Strata receives</div></div>
+  </div>
+  <div id="warnCfg" class="al aw" style="display:block">Airtable / EmailJS not configured — <a href="#" onclick="showTab('setup');return false;">Go to Setup →</a></div>
+  <div id="ownerOk" class="al aok">Saved. Each tenant has been emailed their individual signing link.</div>
+  <div id="ownerErr" class="al aer"></div>
+
+  <div class="card">
+    <div class="ct">Strata lot details</div>
+    <div class="g2">
+      <div class="fld"><label>Unit number <span class="req">*</span></label><input id="lot" placeholder="e.g. 204"></div>
+      <div class="fld"><label>Tenancy commencement date <span class="req">*</span></label><input id="startDate" type="date"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Tenants</div>
+    <div id="tenantList"></div>
+    <button class="btn bg mt" onclick="addTenant()">+ Add tenant</button>
+  </div>
+
+  <div class="card">
+    <div class="ct">Pets</div>
+    <div class="tog-row">
+      <span class="tog-lbl">Does the tenant have pets?</span>
+      <div class="rg">
+        <button class="rb active" id="petsNo" onclick="setPets(false)">No</button>
+        <button class="rb" id="petsYes" onclick="setPets(true)">Yes</button>
+      </div>
+    </div>
+    <div id="petsSection" style="display:none;margin-top:8px">
+      <div id="petList"></div>
+      <button class="btn bg bsm mt" onclick="addPet()">+ Add pet</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Vehicle information</div>
+    <div class="g2">
+      <div class="fld"><label>Make</label><input id="vMake" placeholder="e.g. Toyota"></div>
+      <div class="fld"><label>Model</label><input id="vModel" placeholder="e.g. Corolla"></div>
+    </div>
+    <div class="g2 mt">
+      <div class="fld"><label>Licence plate</label><input id="vPlate" placeholder="e.g. ABC 123"></div>
+      <div class="fld"><label>Color</label><input id="vColor" placeholder="e.g. Silver"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">Owner / landlord details</div>
+    <div class="g2">
+      <div class="fld"><label>Owner / landlord name <span class="req">*</span></label><input id="ownerName" placeholder="Full legal name"></div>
+      <div class="fld"><label>Owner email <span class="req">*</span></label><input id="ownerEmail" type="email" placeholder="owner@email.com"></div>
+    </div>
+    <div class="g1 mt">
+      <div class="fld"><label>Address of landlord or agent</label><input id="ownerAddress" placeholder="Mailing address"></div>
+    </div>
+  </div>
+
+  <div class="acts"><button class="btn bp" id="ownerBtn" onclick="submitOwner()">Send signing links to tenants →</button></div>
+</div>
+
+<!-- TENANT SIGNING -->
+<div id="tenant" class="sec">
+  <div class="steps">
+    <div class="si"><div class="sd done">✓</div><div class="slb">Owner filled</div></div>
+    <div class="si"><div class="sd active">2</div><div class="slb active">Tenants sign</div></div>
+    <div class="si"><div class="sd">3</div><div class="slb">Owner countersigns</div></div>
+    <div class="si"><div class="sd">4</div><div class="slb">Strata receives</div></div>
+  </div>
+  <div id="tenantErr" class="al aer"></div>
+  <div id="tenantOk" class="al aok"></div>
+  <div class="card"><div class="ct">Your tenancy details</div><div id="tSummary" style="font-size:13px;color:var(--t2);line-height:1.9"></div></div>
+  <div class="card">
+    <div class="ct">Important notice — please read carefully</div>
+    <div class="notice">
+      <strong>1.</strong> Under the Strata Property Act, a tenant must comply with the bylaws and rules of the strata corporation in force from time to time.<br><br>
+      <strong>2.</strong> The current bylaws and rules may be changed by the strata corporation, and if changed, the tenant must comply with the changed bylaws and rules.<br><br>
+      <strong>3.</strong> If a tenant, occupant, or visitor contravenes a bylaw or rule, the tenant is responsible and may be subject to penalties including fines, denial of access to recreational facilities, and payment of remediation costs.
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">Documents — review and confirm</div>
+    <div class="ci" id="ciBylaw" onclick="toggleChk('cbBylaw','ciBylaw')">
+      <input type="checkbox" id="cbBylaw" onclick="event.stopPropagation();toggleChk('cbBylaw','ciBylaw')">
+      <label for="cbBylaw">I have read and agree to the <a id="bylawLink" href="#" target="_blank" onclick="event.stopPropagation()">Strata Corporation Bylaws</a></label>
+    </div>
+    <div class="ci" id="ciParking" onclick="toggleChk('cbParking','ciParking')">
+      <input type="checkbox" id="cbParking" onclick="event.stopPropagation();toggleChk('cbParking','ciParking')">
+      <label for="cbParking">I have read and agree to the <a id="parkingLink" href="#" target="_blank" onclick="event.stopPropagation()">Parking Rules</a></label>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">Your signature <span class="req">*</span></div>
+    <div class="sw"><div class="sl">Draw your signature below</div><canvas id="tSigC"></canvas>
+      <div class="sb"><button class="btn bsm" onclick="clearSig('tSigC','tSig')">Clear</button><span style="flex:1"></span><span id="tSigSt" class="sst">No signature yet</span></div>
+    </div>
+  </div>
+  <div class="acts"><button class="btn bp" id="tenantBtn" onclick="submitTenant()">Submit my signature</button></div>
+</div>
+
+<!-- COUNTERSIGN -->
+<div id="countersign" class="sec">
+  <div class="steps">
+    <div class="si"><div class="sd done">✓</div><div class="slb">Owner filled</div></div>
+    <div class="si"><div class="sd done">✓</div><div class="slb">Tenants signed</div></div>
+    <div class="si"><div class="sd active">3</div><div class="slb active">Owner countersigns</div></div>
+    <div class="si"><div class="sd">4</div><div class="slb">Strata receives</div></div>
+  </div>
+  <div id="csErr" class="al aer"></div>
+  <div id="csOk" class="al aok">Form K completed and submitted to the strata corporation.</div>
+  <div class="card"><div class="ct">Review — form details</div><div id="csSummary" style="font-size:13px;color:var(--t2);line-height:1.9"></div></div>
+  <div class="card"><div class="ct">Tenant signing status</div><div id="tSignSt"></div></div>
+  <div class="card">
+    <div class="ct">Owner / landlord signature <span class="req">*</span></div>
+    <div class="sw"><div class="sl">Draw your signature below</div><canvas id="oSigC"></canvas>
+      <div class="sb"><button class="btn bsm" onclick="clearSig('oSigC','oSig')">Clear</button><span style="flex:1"></span><span id="oSigSt" class="sst">No signature yet</span></div>
+    </div>
+  </div>
+  <div class="card"><div class="g2"><div class="fld"><label>Date signed</label><input id="signDate" type="date"></div></div></div>
+  <div class="acts"><button class="btn bp" id="csBtn" onclick="submitCS()">Complete &amp; submit to strata →</button></div>
+</div>
+
+<!-- SUBMISSIONS -->
+<div id="submissions" class="sec">
+  <div class="mrow">
+    <div class="met"><div class="mn" id="mT">0</div><div class="ml">Total</div></div>
+    <div class="met"><div class="mn" id="mC">0</div><div class="ml">Fully signed</div></div>
+    <div class="met"><div class="mn" id="mE">0</div><div class="ml">Unique emails</div></div>
+  </div>
+  <div class="ecard" id="emailCard">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="ct" style="margin:0">All email addresses</div>
+      <button class="cbtn" onclick="copyEmails()">Copy all</button>
+    </div>
+    <div class="el" id="emailList"></div>
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div class="ct" style="margin:0">Submissions</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn bsm" id="refBtn" onclick="loadAirtable()">Refresh</button>
+        <button class="btn bsm" onclick="exportCSV()">Export CSV</button>
+      </div>
+    </div>
+    <div id="subList"><div class="emp">No submissions yet.</div></div>
+  </div>
+</div>
+
+<!-- SETUP -->
+<div id="setup" class="sec">
+  <div class="card">
+    <div class="ct">Document links</div>
+    <p style="font-size:12px;color:var(--t2);margin-bottom:14px">Upload PDFs to Google Drive (set to "Anyone with link can view") and paste URLs below.</p>
+    <div class="g1"><div class="fld"><label>Bylaws document URL</label><input id="cfgBylaws" placeholder="https://drive.google.com/..."></div></div>
+    <div class="g1 mt"><div class="fld"><label>Parking rules document URL</label><input id="cfgParking" placeholder="https://drive.google.com/..."></div></div>
+  </div>
+  <div class="card">
+    <div class="ct">Airtable connection</div>
+    <div id="connBanner" class="al aok" style="margin-bottom:14px">Connected. Submissions will be saved and council notified.</div>
+    <div class="ss"><div class="sn2">1</div><div class="sb2"><strong>Create shared Gmail for the strata corporation</strong><p>e.g. <code>eps87.council@gmail.com</code> — use for both Airtable and EmailJS.</p></div></div>
+    <div class="ss"><div class="sn2">2</div><div class="sb2"><strong>Create Airtable base "Form K Submissions", table "Submissions"</strong>
+      <p>Sign up at <a href="https://airtable.com" target="_blank">airtable.com</a>. Add these fields:</p>
+      <table class="ft"><tr><th>Field name (exact)</th><th>Type</th></tr>
+        <tr><td>Tenants</td><td>Long text</td></tr><tr><td>Primary Email</td><td>Email</td></tr>
+        <tr><td>Owner Name</td><td>Single line text</td></tr><tr><td>Owner Email</td><td>Email</td></tr>
+        <tr><td>Unit Number</td><td>Single line text</td></tr><tr><td>Tenancy Start</td><td>Date</td></tr>
+        <tr><td>Owner Address</td><td>Single line text</td></tr><tr><td>Sign Date</td><td>Date</td></tr>
+        <tr><td>Pets</td><td>Single line text</td></tr><tr><td>Vehicle</td><td>Single line text</td></tr>
+        <tr><td>Submitted At</td><td>Single line text</td></tr><tr><td>Tenant Count</td><td>Number</td></tr>
+        <tr><td>Status</td><td>Single line text</td></tr><tr><td>Both Signed</td><td>Checkbox</td></tr>
+      </table>
+    </div></div>
+    <div class="ss"><div class="sn2">3</div><div class="sb2"><strong>Set up Airtable email notification</strong><p>Automations → New automation. Trigger: record matches conditions → Both Signed = checked. Action: Send email → all council member emails.</p></div></div>
+    <div class="ss"><div class="sn2">4</div><div class="sb2"><strong>Get Base ID and Personal Access Token</strong><p>Base ID from URL (starts with <code>app</code>). Token at <a href="https://airtable.com/create/tokens" target="_blank">airtable.com/create/tokens</a> → scopes: data.records:write + data.records:read.</p></div></div>
+    <div class="g2 mt"><div class="fld"><label>Airtable Base ID</label><input id="cfgBase" placeholder="appXXXXXXXXXXXXXX"></div><div class="fld"><label>Table name</label><input id="cfgTable" placeholder="Submissions"></div></div>
+    <div class="g1 mt"><div class="fld"><label>Personal Access Token</label><input id="cfgPat" type="password" placeholder="patXXXXXXXXXXXXXX"></div></div>
+    <div class="div"></div>
+    <div class="ct">EmailJS — sends emails between parties</div>
+    <div class="ss"><div class="sn2">5</div><div class="sb2"><strong>Sign up at emailjs.com with the shared Gmail</strong><p>Free = 200 emails/month. Connect Gmail under Email Services. Copy your Service ID.</p></div></div>
+    <div class="ss"><div class="sn2">6</div><div class="sb2"><strong>Create two email templates</strong>
+      <p><strong>Template 1 — to tenant:</strong> <code>{{tenant_name}}</code>, <code>{{lot}}</code>, <code>{{owner_name}}</code>, <code>{{signing_link}}</code><br><br>
+      <strong>Template 2 — to owner (countersign):</strong> <code>{{owner_name}}</code>, <code>{{tenant_names}}</code>, <code>{{lot}}</code>, <code>{{countersign_link}}</code><br><br>
+      Get Public Key from Account → General.</p>
+    </div></div>
+    <div class="g2 mt"><div class="fld"><label>EmailJS Service ID</label><input id="cfgSvc" placeholder="service_xxxxxxx"></div><div class="fld"><label>EmailJS Public Key</label><input id="cfgKey" placeholder="XXXXXXXXXXXXXXXXXXXX"></div></div>
+    <div class="g2 mt"><div class="fld"><label>Template ID — to tenant</label><input id="cfgTT" placeholder="template_xxxxxxx"></div><div class="fld"><label>Template ID — to owner</label><input id="cfgTO" placeholder="template_xxxxxxx"></div></div>
+    <div class="g1 mt"><div class="fld"><label>This form's Netlify URL</label><input id="cfgUrl" placeholder="https://eps87-formk.netlify.app"></div></div>
+    <div style="display:flex;gap:8px;align-items:center;margin-top:16px;flex-wrap:wrap">
+      <button class="btn bp" onclick="saveConfig()">Save &amp; test connection</button>
+      <button class="btn bsm bd" onclick="clearConfig()">Clear credentials</button>
+      <span id="testSt" style="font-size:12px;color:var(--t2)"></span>
+    </div>
+  </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+var C={},subs=[],sig={oSig:null,tSig:null},drw={},pf=null,petN=0,hasPets=false,tn=0,curTi=null;
+
+function sv(id,v){var e=document.getElementById(id);if(e&&v)e.value=v;}
+function gv(id){var e=document.getElementById(id);return e?e.value.trim():'';}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function loadCfg(){
+  try{C=JSON.parse(localStorage.getItem('fk_c')||'{}');}catch(e){C={};}
+  sv('cfgBase',C.base);sv('cfgTable',C.tbl);sv('cfgPat',C.pat);
+  sv('cfgSvc',C.svc);sv('cfgKey',C.key);sv('cfgTT',C.tt);sv('cfgTO',C.to);
+  sv('cfgUrl',C.url);sv('cfgBylaws',C.bylaws);sv('cfgParking',C.parking);
+  updUI();updLinks();
+  if(C.key){try{emailjs.init(C.key);}catch(e){}}
+}
+
+function saveCfg(){
+  C.base=gv('cfgBase');C.tbl=gv('cfgTable')||'Submissions';C.pat=gv('cfgPat');
+  C.svc=gv('cfgSvc');C.key=gv('cfgKey');C.tt=gv('cfgTT');C.to=gv('cfgTO');
+  C.url=gv('cfgUrl').replace(/\/$/,'');C.bylaws=gv('cfgBylaws');C.parking=gv('cfgParking');
+  localStorage.setItem('fk_c',JSON.stringify(C));
+  if(C.key){try{emailjs.init(C.key);}catch(e){}}
+  updLinks();
+  if(!C.base||!C.pat){setTS('Enter Base ID and token.',false);return;}
+  setTS('<span class="spin"></span>Testing...',null);
+  fetch(atU()+'?maxRecords=1',{headers:atH()})
+    .then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d};});})
+    .then(function(r){if(r.ok){setTS('Connected!',true);updUI();}else{setTS('Error: '+(r.d.error&&r.d.error.message||'Check credentials.'),false);}})
+    .catch(function(){setTS('Network error.',false);});
+}
+
+function clearConfig(){
+  if(!confirm('Clear all credentials?'))return;
+  C={};localStorage.removeItem('fk_c');
+  ['cfgBase','cfgTable','cfgPat','cfgSvc','cfgKey','cfgTT','cfgTO','cfgUrl','cfgBylaws','cfgParking'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
+  updUI();setTS('Cleared.',null);
+}
+
+function hasCfg(){return !!(C.base&&C.pat);}
+function updUI(){
+  var tag=document.getElementById('connTag'),w=document.getElementById('warnCfg'),b=document.getElementById('connBanner');
+  if(hasCfg()){tag.textContent='Connected';tag.style.cssText='background:var(--bgs);color:var(--ts);border-color:var(--brs)';w.style.display='none';b.style.display='block';}
+  else{tag.textContent='Not connected';tag.style.cssText='';w.style.display='block';b.style.display='none';}
+}
+function updLinks(){
+  var bl=document.getElementById('bylawLink'),pk=document.getElementById('parkingLink');
+  if(bl)bl.href=C.bylaws||'#';if(pk)pk.href=C.parking||'#';
+}
+function setTS(m,ok){var e=document.getElementById('testSt');e.innerHTML=m;e.style.color=ok===true?'var(--ts)':ok===false?'var(--td)':'var(--t2)';}
+
+function showTab(t){
+  var ts=['owner','tenant','countersign','submissions','setup'];
+  document.querySelectorAll('.tab').forEach(function(e,i){e.classList.toggle('active',ts[i]===t);});
+  document.querySelectorAll('.sec').forEach(function(e){e.classList.remove('active');});
+  document.getElementById(t).classList.add('active');
+  if(t==='submissions'){loadLocal();renderSubs();}
+  if(t==='countersign'){fillCS();}
+}
+
+function addTenant(){
+  tn++;
+  var n=tn;
+  var div=document.createElement('div');
+  div.className='tblock';div.id='tb_'+n;
+  div.innerHTML='<div class="tblock-hd"><span class="tnum">Tenant '+n+'</span>'+(n>1?'<button class="btn bsm bd" onclick="rmTenant('+n+')">Remove</button>':'')+'</div>'+
+    '<div class="g2"><div class="fld"><label>Full name <span class="req">*</span></label><input id="tN_'+n+'" placeholder="Full legal name"></div>'+
+    '<div class="fld"><label>Email <span class="req">*</span></label><input id="tE_'+n+'" type="email" placeholder="tenant@email.com"></div></div>'+
+    '<div class="g2 mt"><div class="fld"><label>Cell phone number</label><input id="tP_'+n+'" type="tel" placeholder="(250) 000-0000"></div></div>';
+  document.getElementById('tenantList').appendChild(div);
+}
+
+function rmTenant(n){var e=document.getElementById('tb_'+n);if(e)e.remove();}
+
+function getTenants(){
+  var out=[];
+  for(var i=1;i<=tn;i++){
+    var ne=document.getElementById('tN_'+i);
+    if(!ne)continue;
+    var nm=ne.value.trim(),em=(document.getElementById('tE_'+i)||{}).value||'',ph=(document.getElementById('tP_'+i)||{}).value||'';
+    if(nm)out.push({name:nm,email:em.toLowerCase().trim(),phone:ph.trim(),signed:false});
+  }
+  return out;
+}
+
+function setPets(yes){
+  hasPets=yes;
+  document.getElementById('petsYes').classList.toggle('active',yes);
+  document.getElementById('petsNo').classList.toggle('active',!yes);
+  document.getElementById('petsSection').style.display=yes?'block':'none';
+  if(yes&&petN===0)addPet();
+}
+
+function addPet(){
+  petN++;var n=petN;
+  var div=document.createElement('div');div.className='pet-row';div.id='pt_'+n;
+  div.innerHTML='<div class="fld"><label>Species</label><input id="pS_'+n+'" placeholder="e.g. Dog, Cat"></div>'+
+    '<div class="fld"><label>How many</label><input type="number" min="1" max="20" placeholder="1" id="pC_'+n+'"></div>'+
+    '<button class="btn bsm bd" style="align-self:flex-end" onclick="rmPet('+n+')">✕</button>';
+  document.getElementById('petList').appendChild(div);
+}
+
+function rmPet(n){var e=document.getElementById('pt_'+n);if(e)e.remove();}
+
+function getPets(){
+  if(!hasPets)return'None';
+  var parts=[];
+  for(var i=1;i<=petN;i++){
+    var se=document.getElementById('pS_'+i);if(!se)continue;
+    var sp=se.value.trim(),ce=document.getElementById('pC_'+i),cn=ce?ce.value.trim():'1';
+    if(sp)parts.push((cn||'1')+' x '+sp);
+  }
+  return parts.length?parts.join(', '):'Not specified';
+}
+
+function initCanvas(id,key){
+  var c=document.getElementById(id),ctx=c.getContext('2d'),dpr=window.devicePixelRatio||1;
+  function rsz(){var w=c.offsetWidth||660;c.width=w*dpr;c.height=110*dpr;c.style.width='100%';c.style.height='110px';ctx.setTransform(1,0,0,1,0,0);ctx.scale(dpr,dpr);}
+  rsz();window.addEventListener('resize',rsz);
+  function pos(e){var r=c.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:s.clientX-r.left,y:s.clientY-r.top};}
+  function dn(e){e.preventDefault();drw[key]=true;var p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);}
+  function mv(e){
+    e.preventDefault();if(!drw[key])return;var p=pos(e);ctx.lineTo(p.x,p.y);
+    ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--t').trim()||'#1a1a18';
+    ctx.lineWidth=1.8;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();
+    sig[key]=c.toDataURL();updSig(key);
+  }
+  function up(){drw[key]=false;}
+  c.addEventListener('mousedown',dn);c.addEventListener('mousemove',mv);c.addEventListener('mouseup',up);c.addEventListener('mouseleave',up);
+  c.addEventListener('touchstart',dn,{passive:false});c.addEventListener('touchmove',mv,{passive:false});c.addEventListener('touchend',up);
+}
+
+function updSig(key){
+  var map={tSig:'tSigSt',oSig:'oSigSt'};
+  var e=document.getElementById(map[key]);if(!e)return;
+  var has=!!sig[key];e.textContent=has?'Signed':'No signature yet';e.className='sst'+(has?' ok':'');
+}
+
+function clearSig(cid,key){
+  var c=document.getElementById(cid);c.getContext('2d').clearRect(0,0,c.width,c.height);
+  sig[key]=null;updSig(key);
+}
+
+function showAl(id,txt){
+  ['ownerOk','ownerErr','tenantErr','tenantOk','csErr','csOk'].forEach(function(i){var e=document.getElementById(i);if(e)e.style.display='none';});
+  var e=document.getElementById(id);if(!e)return;
+  if(txt)e.innerHTML=txt;e.style.display='block';e.scrollIntoView({behavior:'smooth',block:'nearest'});
+  setTimeout(function(){e.style.display='none';},10000);
+}
+
+function setBtn(id,loading,txt){var b=document.getElementById(id);if(!b)return;b.disabled=loading;b.innerHTML=loading?'<span class="spin"></span>'+txt:txt;}
+
+function atU(){return'https://api.airtable.com/v0/'+C.base+'/'+encodeURIComponent(C.tbl);}
+function atH(){return{'Authorization':'Bearer '+C.pat,'Content-Type':'application/json'};}
+
+function sendEmail(tpl,params,cb){
+  if(!C.svc||!C.key||!tpl){cb(false,'EmailJS not configured');return;}
+  emailjs.send(C.svc,tpl,params).then(function(){cb(true);}).catch(function(e){cb(false,e.text||String(e));});
+}
+
+function submitOwner(){
+  var tenants=getTenants();
+  var miss=[];
+  if(!gv('lot'))miss.push('Unit number');
+  if(!gv('startDate'))miss.push('Tenancy start date');
+  if(tenants.length===0)miss.push('At least one tenant');
+  tenants.forEach(function(t,i){if(!t.name)miss.push('Tenant '+(i+1)+' name');if(!t.email)miss.push('Tenant '+(i+1)+' email');});
+  if(!gv('ownerName'))miss.push('Owner name');
+  if(!gv('ownerEmail'))miss.push('Owner email');
+  if(miss.length){showAl('ownerErr','Please complete: '+miss.join(', ')+'.');return;}
+
+  var fid='fk_'+Date.now();
+  var veh=[gv('vMake'),gv('vModel'),gv('vColor'),gv('vPlate')].filter(Boolean).join(' · ')||'None';
+  var fd={id:fid,created:new Date().toISOString(),lot:gv('lot'),startDate:gv('startDate'),
+    tenants:tenants,ownerName:gv('ownerName'),ownerEmail:gv('ownerEmail').toLowerCase(),
+    ownerAddress:gv('ownerAddress'),pets:getPets(),vehicle:veh,status:'awaiting_tenants'};
+
+  var pend=JSON.parse(localStorage.getItem('fk_p')||'{}');
+  pend[fid]=fd;localStorage.setItem('fk_p',JSON.stringify(pend));pf=fd;
+
+  setBtn('ownerBtn',true,'Sending...');
+  var base=C.url||window.location.href.split('?')[0];
+  var links=tenants.map(function(_,i){return base+'?step=tenant&id='+fid+'&ti='+i;});
+
+  if(C.svc&&C.key&&C.tt){
+    var sent=0,failed=[];
+    tenants.forEach(function(t,i){
+      sendEmail(C.tt,{tenant_name:t.name,lot:fd.lot,address:'700 Center Street, Revelstoke BC — Unit '+fd.lot,owner_name:fd.ownerName,signing_link:links[i]},
+        function(ok,err){
+          if(!ok)failed.push(t.name+(err?' ('+err+')':''));
+          sent++;
+          if(sent===tenants.length){
+            setBtn('ownerBtn',false,'Send signing links to tenants →');
+            if(!failed.length){showAl('ownerOk');resetOwner();}
+            else{var m='Some emails failed: '+failed.join('; ')+'. Share links manually:';links.forEach(function(l,i){m+='<br>Tenant '+(i+1)+' ('+esc(tenants[i].name)+'): '+l;});showAl('ownerErr',m);}
+          }
+        });
+    });
+  }else{
+    setBtn('ownerBtn',false,'Send signing links to tenants →');
+    var m='EmailJS not configured. Share these links manually:';
+    links.forEach(function(l,i){m+='<br>Tenant '+(i+1)+' ('+esc(tenants[i].name)+'): '+l;});
+    showAl('ownerErr',m);
+  }
+}
+
+function resetOwner(){
+  ['lot','startDate','ownerName','ownerEmail','ownerAddress','vMake','vModel','vPlate','vColor'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
+  document.getElementById('tenantList').innerHTML='';tn=0;addTenant();
+  document.getElementById('petList').innerHTML='';petN=0;setPets(false);
+}
+
+function loadTenantStep(fid,ti){
+  var pend=JSON.parse(localStorage.getItem('fk_p')||'{}');
+  var f=pend[fid];
+  var el=document.getElementById('tSummary');
+  if(!f||!f.tenants||!f.tenants[ti]){el.innerHTML='<span style="color:var(--td)">Form not found. Please contact your landlord.</span>';return;}
+  pf=f;curTi=parseInt(ti);
+  var t=f.tenants[curTi];
+  var html='<b>Signing as:</b> <strong>'+esc(t.name)+'</strong>'+(f.tenants.length>1?' (Tenant '+(curTi+1)+' of '+f.tenants.length+')':'')+'<br>'+
+    '<b>Unit:</b> '+esc(f.lot)+' — 700 Center Street, Revelstoke BC<br>'+
+    '<b>Tenancy start:</b> '+esc(f.startDate)+'<br><b>Owner:</b> '+esc(f.ownerName);
+  if(f.pets&&f.pets!=='None')html+='<br><b>Pets declared:</b> '+esc(f.pets);
+  if(f.vehicle&&f.vehicle!=='None')html+='<br><b>Vehicle:</b> '+esc(f.vehicle);
+  if(f.tenants.length>1){var others=f.tenants.filter(function(_,i){return i!==curTi;}).map(function(x){return esc(x.name);});html+='<br><b>Other tenants:</b> '+others.join(', ');}
+  el.innerHTML=html;
+  updLinks();
+  if(t.signed){document.getElementById('tenantBtn').disabled=true;document.getElementById('tenantBtn').textContent='Already signed';el.innerHTML+='<br><span style="color:var(--ts);font-weight:500">You have already signed this form.</span>';}
+}
+
+function toggleChk(cbId,ciId){
+  var cb=document.getElementById(cbId);cb.checked=!cb.checked;
+  document.getElementById(ciId).classList.toggle('chk',cb.checked);
+}
+
+function submitTenant(){
+  if(pf===null||curTi===null){showAl('tenantErr','Form data not found. Use the link from your email.');return;}
+  var miss=[];
+  if(!document.getElementById('cbBylaw').checked)miss.push('Please agree to the Strata Bylaws');
+  if(!document.getElementById('cbParking').checked)miss.push('Please agree to the Parking Rules');
+  if(!sig.tSig)miss.push('Your signature is required');
+  if(miss.length){showAl('tenantErr',miss.join(' · '));return;}
+
+  setBtn('tenantBtn',true,'Saving...');
+  var pend=JSON.parse(localStorage.getItem('fk_p')||'{}');
+  var f=pend[pf.id];
+  if(f&&f.tenants&&f.tenants[curTi]){
+    f.tenants[curTi].signed=true;f.tenants[curTi].signedAt=new Date().toISOString();
+    var allDone=f.tenants.every(function(t){return t.signed;});
+    f.status=allDone?'awaiting_owner':'awaiting_tenants';
+    pend[pf.id]=f;localStorage.setItem('fk_p',JSON.stringify(pend));pf=f;
+  }
+
+  var t=pf.tenants[curTi];
+  var remaining=pf.tenants.filter(function(x){return!x.signed;});
+  var allDone=remaining.length===0;
+  var base=C.url||window.location.href.split('?')[0];
+  var csLink=base+'?step=countersign&id='+pf.id;
+
+  setBtn('tenantBtn',false,'Submit my signature');
+
+  if(allDone){
+    var names=pf.tenants.map(function(x){return x.name;}).join(', ');
+    var msg='Thank you, '+esc(t.name)+'! All '+pf.tenants.length+' tenant(s) have signed. The owner has been notified to countersign.';
+    if(C.svc&&C.key&&C.to){
+      sendEmail(C.to,{owner_name:pf.ownerName,tenant_names:names,lot:pf.lot,countersign_link:csLink},
+        function(ok,err){if(ok){showAl('tenantOk',msg);}else{showAl('tenantErr','All signed, but owner email failed ('+err+'). Share this link with the owner: '+csLink);}});
+    }else{showAl('tenantErr','All tenants signed. EmailJS not configured — share this link with the owner: '+csLink);}
+  }else{
+    var rem=remaining.map(function(x){return esc(x.name);}).join(', ');
+    showAl('tenantOk','Thank you, '+esc(t.name)+'! Your signature saved. Still waiting for: '+rem+'.');
+  }
+}
+
+function loadCSStep(fid){
+  var pend=JSON.parse(localStorage.getItem('fk_p')||'{}');
+  var f=pend[fid];
+  if(!f){document.getElementById('csSummary').innerHTML='<span style="color:var(--td)">Form not found.</span>';return;}
+  pf=f;fillCS();
+}
+
+function fillCS(){
+  var el=document.getElementById('csSummary');if(!el)return;
+  if(!pf){el.innerHTML='<span style="color:var(--t3)">No form loaded. Use the link from your email.</span>';return;}
+  var f=pf;
+  var names=f.tenants.map(function(t){return t.name;}).join(', ');
+  el.innerHTML='<b>Unit:</b> '+esc(f.lot)+' — 700 Center Street, Revelstoke BC<br>'+
+    '<b>Tenancy start:</b> '+esc(f.startDate)+'<br><b>Tenant(s):</b> '+esc(names)+'<br>'+
+    '<b>Owner:</b> '+esc(f.ownerName)+' · '+esc(f.ownerEmail)+
+    (f.pets&&f.pets!=='None'?'<br><b>Pets:</b> '+esc(f.pets):'')+
+    (f.vehicle&&f.vehicle!=='None'?'<br><b>Vehicle:</b> '+esc(f.vehicle):'');
+  var stEl=document.getElementById('tSignSt');if(!stEl)return;
+  var stH='';
+  f.tenants.forEach(function(t,i){
+    stH+='<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:.5px solid var(--b)">'+
+      '<span style="font-size:13px"><strong>Tenant '+(i+1)+':</strong> '+esc(t.name)+(t.email?' · <span style="color:var(--t2)">'+esc(t.email)+'</span>':'')+'</span>'+
+      '<span class="sbg '+(t.signed?'bok':'bw')+'">'+(t.signed?'Signed':'Pending')+'</span></div>';
+  });
+  stEl.innerHTML=stH;
+}
+
+function submitCS(){
+  if(!pf){showAl('csErr','No form loaded. Use the link from your email.');return;}
+  var unsigned=pf.tenants.filter(function(t){return!t.signed;});
+  if(unsigned.length&&!confirm('Warning: '+unsigned.map(function(t){return t.name;}).join(', ')+' has not signed yet. Submit anyway?'))return;
+  if(!sig.oSig){showAl('csErr','Please provide your signature.');return;}
+  setBtn('csBtn',true,'Submitting...');
+  var now=new Date().toISOString();
+  var sub=Object.assign({},pf,{submitted:now,signDate:gv('signDate')||now.split('T')[0],ownerSigned:true,status:'complete'});
+
+  function finish(ok,err){
+    setBtn('csBtn',false,'Complete &amp; submit to strata →');
+    if(ok){
+      showAl('csOk');
+      var pend=JSON.parse(localStorage.getItem('fk_p')||'{}');
+      delete pend[sub.id];localStorage.setItem('fk_p',JSON.stringify(pend));
+      pf=null;sig.oSig=null;updSig('oSig');
+      var ss=JSON.parse(localStorage.getItem('fk_s')||'[]');ss.unshift(sub);
+      try{localStorage.setItem('fk_s',JSON.stringify(ss.slice(0,200)));}catch(e){}
+    }else{showAl('csErr','Error: '+(err||'Check Setup tab.'));}
+  }
+
+  if(hasCfg()){
+    var names=sub.tenants.map(function(t){return t.name;}).join(', ');
+    var tsum=sub.tenants.map(function(t,i){return'Tenant '+(i+1)+': '+t.name+(t.email?' <'+t.email+'>':'')+(t.phone?' '+t.phone:'');}).join('\n');
+    var fields={'Tenants':tsum,'Primary Email':sub.tenants[0]&&sub.tenants[0].email||'',
+      'Owner Name':sub.ownerName,'Owner Email':sub.ownerEmail,'Unit Number':sub.lot,
+      'Owner Address':sub.ownerAddress,'Submitted At':sub.submitted,'Pets':sub.pets,
+      'Vehicle':sub.vehicle,'Tenant Count':sub.tenants.length,'Status':'Complete','Both Signed':true};
+    if(sub.startDate)fields['Tenancy Start']=sub.startDate;
+    if(sub.signDate)fields['Sign Date']=sub.signDate;
+    fetch(atU(),{method:'POST',headers:atH(),body:JSON.stringify({records:[{fields:fields}]})})
+      .then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d};});})
+      .then(function(r){finish(r.ok,r.d.error&&r.d.error.message);})
+      .catch(function(){finish(false,'Network error');});
+  }else{
+    var ss=JSON.parse(localStorage.getItem('fk_s')||'[]');ss.unshift(sub);
+    try{localStorage.setItem('fk_s',JSON.stringify(ss.slice(0,200)));}catch(e){}
+    finish(true);
+  }
+}
+
+function loadLocal(){try{subs=JSON.parse(localStorage.getItem('fk_s')||'[]');}catch(e){subs=[];}}
+
+function loadAirtable(){
+  if(!hasCfg()){alert('Configure Airtable in Setup first.');return;}
+  var btn=document.getElementById('refBtn');btn.disabled=true;btn.textContent='Loading...';
+  fetch(atU()+'?sort%5B0%5D%5Bfield%5D=Submitted+At&sort%5B0%5D%5Bdirection%5D=desc&maxRecords=200',{headers:atH()})
+    .then(function(r){return r.json();})
+    .then(function(data){
+      btn.disabled=false;btn.textContent='Refresh';
+      if(!data.records){alert('Could not load.');return;}
+      subs=data.records.map(function(r){
+        var f=r.fields;
+        return{id:r.id,submitted:f['Submitted At']||r.createdTime,lot:f['Unit Number']||'',
+          tenantsStr:f['Tenants']||'',primaryEmail:f['Primary Email']||'',
+          ownerName:f['Owner Name']||'',ownerEmail:f['Owner Email']||'',
+          startDate:f['Tenancy Start']||'',pets:f['Pets']||'',vehicle:f['Vehicle']||'',
+          tenantCount:f['Tenant Count']||1,ownerSigned:!!f['Both Signed'],status:f['Status']||''};
+      });
+      try{localStorage.setItem('fk_s',JSON.stringify(subs.slice(0,200)));}catch(e){}
+      renderSubs();
+    }).catch(function(){btn.disabled=false;btn.textContent='Refresh';alert('Could not load from Airtable.');});
+}
+
+function renderSubs(){
+  var emails=[];
+  subs.forEach(function(s){
+    if(s.primaryEmail)emails.push(s.primaryEmail);if(s.ownerEmail)emails.push(s.ownerEmail);
+    if(s.tenants)s.tenants.forEach(function(t){if(t.email)emails.push(t.email);});
+  });
+  var unique=[...new Set(emails)];
+  document.getElementById('mT').textContent=subs.length;
+  document.getElementById('mC').textContent=subs.filter(function(s){return s.ownerSigned;}).length;
+  document.getElementById('mE').textContent=unique.length;
+  var ec=document.getElementById('emailCard');
+  if(unique.length){ec.style.display='block';document.getElementById('emailList').textContent=unique.join('\n');}else ec.style.display='none';
+  var list=document.getElementById('subList');
+  if(!subs.length){list.innerHTML='<div class="emp">No completed submissions yet.</div>';return;}
+  var html='<div class="ch"><span>Tenants &amp; unit</span><span>Status</span><span>Date</span></div>';
+  subs.forEach(function(s){
+    var signed=s.ownerSigned;
+    var date=s.submitted?new Date(s.submitted).toLocaleDateString('en-CA'):'';
+    var td=s.tenantsStr?s.tenantsStr.split('\n')[0]:(s.tenants&&s.tenants[0]?s.tenants[0].name:'—');
+    var cnt=s.tenantCount||1;
+    html+='<div class="sr"><div><div class="sn">'+esc(td)+(cnt>1?' <span style="font-size:11px;color:var(--t2);font-weight:400">+'+( cnt-1)+' more</span>':'')+'</div>'+
+      '<div class="sdt">Unit '+esc(s.lot)+' · Owner: '+esc(s.ownerName)+'</div></div>'+
+      '<div><span class="sbg '+(signed?'bok':'bw')+'">'+(signed?'Complete':'Pending')+'</span></div>'+
+      '<div style="font-size:12px;color:var(--t2)">'+date+'</div></div>';
+  });
+  list.innerHTML=html;
+}
+
+function copyEmails(){
+  var emails=[];
+  subs.forEach(function(s){if(s.primaryEmail)emails.push(s.primaryEmail);if(s.ownerEmail)emails.push(s.ownerEmail);if(s.tenants)s.tenants.forEach(function(t){if(t.email)emails.push(t.email);});});
+  var unique=[...new Set(emails)];
+  navigator.clipboard.writeText(unique.join('\n')).then(function(){alert('Copied '+unique.length+' emails.');}).catch(function(){prompt('Copy:',unique.join(', '));});
+}
+
+function exportCSV(){
+  if(!subs.length){alert('No submissions to export.');return;}
+  var cols=['submitted','lot','tenantsStr','primaryEmail','ownerName','ownerEmail','startDate','pets','vehicle','signDate','status'];
+  var hdrs=['Submitted','Unit','Tenants','Primary Email','Owner Name','Owner Email','Tenancy Start','Pets','Vehicle','Sign Date','Status'];
+  var csv=hdrs.join(',')+'\n';
+  subs.forEach(function(s){csv+=cols.map(function(c){return'"'+String(s[c]!==undefined?s[c]:'').replace(/"/g,'""')+'"';}).join(',')+'\n';});
+  var a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='FormK-EPS87-'+new Date().toISOString().split('T')[0]+'.csv';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+
+function checkUrl(){
+  var p=new URLSearchParams(window.location.search);
+  var step=p.get('step'),id=p.get('id'),ti=p.get('ti');
+  if(step==='tenant'&&id){showTab('tenant');loadTenantStep(id,ti||0);}
+  else if(step==='countersign'&&id){showTab('countersign');loadCSStep(id);}
+}
+
+function saveConfig(){saveCfg();}
+
+window.addEventListener('load',function(){
+  loadCfg();loadLocal();
+  initCanvas('tSigC','tSig');
+  initCanvas('oSigC','oSig');
+  document.getElementById('signDate').value=new Date().toISOString().split('T')[0];
+  setPets(false);addTenant();
+  checkUrl();
+});
+</script>
+</body>
+</html>

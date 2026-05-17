@@ -202,11 +202,11 @@ code{font-family:var(--mono);font-size:11px;background:var(--bg2);padding:2px 5p
   <div class="card">
     <div class="ct">Vehicle information</div>
     <div class="g2">
-      <div class="fld"><label>Make</label><input id="vMake" placeholder="e.g. Toyota"></div>
+      <div class="fld"><label>Make <span class="req">*</span></label><input id="vMake" placeholder="e.g. Toyota"></div>
       <div class="fld"><label>Model</label><input id="vModel" placeholder="e.g. Corolla"></div>
     </div>
     <div class="g2 mt">
-      <div class="fld"><label>Licence plate</label><input id="vPlate" placeholder="e.g. ABC 123"></div>
+      <div class="fld"><label>Licence plate <span class="req">*</span></label><input id="vPlate" placeholder="e.g. ABC 123"></div>
       <div class="fld"><label>Color</label><input id="vColor" placeholder="e.g. Silver"></div>
     </div>
   </div>
@@ -427,7 +427,7 @@ function addTenant(){
   div.innerHTML='<div class="tblock-hd"><span class="tnum">Tenant '+n+'</span>'+(n>1?'<button class="btn bsm bd" onclick="rmTenant('+n+')">Remove</button>':'')+'</div>'+
     '<div class="g2"><div class="fld"><label>Full name <span class="req">*</span></label><input id="tN_'+n+'" placeholder="Full legal name"></div>'+
     '<div class="fld"><label>Email <span class="req">*</span></label><input id="tE_'+n+'" type="email" placeholder="tenant@email.com"></div></div>'+
-    '<div class="g2 mt"><div class="fld"><label>Cell phone number</label><input id="tP_'+n+'" type="tel" placeholder="(250) 000-0000"></div></div>';
+    '<div class="g2 mt"><div class="fld"><label>Cell phone number <span class="req">*</span></label><input id="tP_'+n+'" type="tel" placeholder="(250) 000-0000"></div></div>';
   document.getElementById('tenantList').appendChild(div);
 }
 
@@ -525,7 +525,9 @@ function submitOwner(){
   if(!gv('lot'))miss.push('Unit number');
   if(!gv('startDate'))miss.push('Tenancy start date');
   if(tenants.length===0)miss.push('At least one tenant');
-  tenants.forEach(function(t,i){if(!t.name)miss.push('Tenant '+(i+1)+' name');if(!t.email)miss.push('Tenant '+(i+1)+' email');});
+  tenants.forEach(function(t,i){if(!t.name)miss.push('Tenant '+(i+1)+' name');if(!t.email)miss.push('Tenant '+(i+1)+' email');if(!t.phone)miss.push('Tenant '+(i+1)+' cell phone');});
+  if(!gv('vMake'))miss.push('Vehicle make');
+  if(!gv('vPlate'))miss.push('Vehicle licence plate');
   if(!gv('ownerName'))miss.push('Owner name');
   if(!gv('ownerEmail'))miss.push('Owner email');
   if(miss.length){showAl('ownerErr','Please complete: '+miss.join(', ')+'.');return;}

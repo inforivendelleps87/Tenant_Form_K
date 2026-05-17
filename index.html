@@ -546,7 +546,7 @@ function submitOwner(){
   if(C.svc&&C.key&&C.tt){
     var sent=0,failed=[];
     tenants.forEach(function(t,i){
-      sendEmail(C.tt,{tenant_name:t.name,lot:fd.lot,address:'700 Center Street, Revelstoke BC — Unit '+fd.lot,owner_name:fd.ownerName,signing_link:links[i]},
+      sendEmail(C.tt,{tenant_name:t.name,tenant_email:t.email,lot:fd.lot,address:'700 Center Street, Revelstoke BC — Unit '+fd.lot,owner_name:fd.ownerName,signing_link:links[i]},
         function(ok,err){
           if(!ok)failed.push(t.name+(err?' ('+err+')':''));
           sent++;
@@ -624,7 +624,7 @@ function submitTenant(){
     var names=pf.tenants.map(function(x){return x.name;}).join(', ');
     var msg='Thank you, '+esc(t.name)+'! All '+pf.tenants.length+' tenant(s) have signed. The owner has been notified to countersign.';
     if(C.svc&&C.key&&C.to){
-      sendEmail(C.to,{owner_name:pf.ownerName,tenant_names:names,lot:pf.lot,countersign_link:csLink},
+      sendEmail(C.to,{owner_name:pf.ownerName,owner_email:pf.ownerEmail,tenant_names:names,lot:pf.lot,countersign_link:csLink},
         function(ok,err){if(ok){showAl('tenantOk',msg);}else{showAl('tenantErr','All signed, but owner email failed ('+err+'). Share this link with the owner: '+csLink);}});
     }else{showAl('tenantErr','All tenants signed. EmailJS not configured — share this link with the owner: '+csLink);}
   }else{

@@ -70,7 +70,7 @@ body{font-family:var(--font);font-size:14px;color:var(--t);background:var(--bg3)
 canvas{display:block;cursor:crosshair;width:100%;height:110px;touch-action:none;background:var(--bg)}
 .sb{display:flex;align-items:center;gap:8px;padding:7px 10px;border-top:.5px solid var(--b);background:var(--bg2)}
 .sst{font-size:12px;color:var(--t3)}.sst.ok{color:var(--ts);font-weight:500}
-.ci{display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--bg2);border-radius:var(--rm);margin-bottom:8px;cursor:pointer}
+.ci{display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--bg2);border-radius:var(--rm);margin-bottom:8px}
 .ci input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:1px;accent-color:var(--t);cursor:pointer}
 .ci label{font-size:13px;color:var(--t2);line-height:1.5;cursor:pointer}
 .ci label a{color:var(--ti);font-weight:500}
@@ -141,7 +141,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--bg2);padding:2px 5p
 <div class="app">
 
 <div class="strata-hd">
-  <div><h2>Strata Corporation EPS87</h2><p>700 Center Street, Revelstoke, BC &nbsp;V0E 2S1</p></div>
+  <div><h2>Rivendell EPS87 Strata Corporation</h2><p>700 Center Street, Revelstoke, BC &nbsp;V0E 2S1</p></div>
   <div><div class="plan">EPS87</div><div class="act">Strata Property Act, s.146</div></div>
 </div>
 
@@ -166,8 +166,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--bg2);padding:2px 5p
     <div class="si"><div class="sd">3</div><div class="slb">Owner countersigns</div></div>
     <div class="si"><div class="sd">4</div><div class="slb">Strata receives</div></div>
   </div>
-  <div id="warnCfg" class="al aw" style="display:block">Airtable / EmailJS not configured — <a href="#" onclick="showTab('setup');return false;">Go to Setup →</a></div>
-  <div id="ownerOk" class="al aok">Saved. Each tenant has been emailed their individual signing link.</div>
+  <div id="ownerOk" class="al aok">Saved. Tenant signing links have been stored. Make.com will send the emails automatically.</div>
   <div id="ownerErr" class="al aer"></div>
 
   <div class="card">
@@ -222,7 +221,7 @@ code{font-family:var(--mono);font-size:11px;background:var(--bg2);padding:2px 5p
     </div>
   </div>
 
-  <div class="acts"><button class="btn bp" id="ownerBtn" onclick="submitOwner()">Send signing links to tenants →</button></div>
+  <div class="acts"><button class="btn bp" id="ownerBtn" onclick="submitOwner()">Submit form →</button></div>
 </div>
 
 <!-- TENANT SIGNING -->
@@ -246,13 +245,17 @@ code{font-family:var(--mono);font-size:11px;background:var(--bg2);padding:2px 5p
   </div>
   <div class="card">
     <div class="ct">Documents — review and confirm</div>
-    <div class="ci" id="ciBylaw" >
+    <div class="ci" id="ciBylaw">
       <input type="checkbox" id="cbBylaw" onchange="toggleChk('cbBylaw','ciBylaw')">
-      <label for="cbBylaw">I have read and agree to the <a id="bylawLink" href="#" target="_blank" onclick="event.stopPropagation()">Strata Corporation Bylaws</a></label>
+      <label for="cbBylaw">I have read and agree to the <a id="bylawLink" href="#" target="_blank">Strata Corporation Bylaws</a></label>
     </div>
-    <div class="ci" id="ciParking" >
+    <div class="ci" id="ciParking">
       <input type="checkbox" id="cbParking" onchange="toggleChk('cbParking','ciParking')">
-      <label for="cbParking">I have read and agree to the <a id="parkingLink" href="#" target="_blank" onclick="event.stopPropagation()">Parking Rules</a></label>
+      <label for="cbParking">I have read and agree to the <a id="parkingLink" href="#" target="_blank">Parking Rule</a></label>
+    </div>
+    <div class="ci" id="ciExterior">
+      <input type="checkbox" id="cbExterior" onchange="toggleChk('cbExterior','ciExterior')">
+      <label for="cbExterior">I have read and agree to the <a id="exteriorLink" href="#" target="_blank">Exterior Installation Rule</a></label>
     </div>
   </div>
   <div class="card">
@@ -315,51 +318,44 @@ code{font-family:var(--mono);font-size:11px;background:var(--bg2);padding:2px 5p
 <!-- SETUP -->
 <div id="setup" class="sec">
   <div class="card">
-    <div class="ct">Document links</div>
-    <p style="font-size:12px;color:var(--t2);margin-bottom:14px">Upload PDFs to Google Drive (set to "Anyone with link can view") and paste URLs below.</p>
-    <div class="g1"><div class="fld"><label>Bylaws document URL</label><input id="cfgBylaws" placeholder="https://drive.google.com/..."></div></div>
-    <div class="g1 mt"><div class="fld"><label>Parking rules document URL</label><input id="cfgParking" placeholder="https://drive.google.com/..."></div></div>
-  </div>
-  <div class="card">
     <div class="ct">Airtable connection</div>
-    <div id="connBanner" class="al aok" style="margin-bottom:14px">Connected. Submissions will be saved and council notified.</div>
-    <div class="ss"><div class="sn2">1</div><div class="sb2"><strong>Create shared Gmail for the strata corporation</strong><p>e.g. <code>eps87.council@gmail.com</code> — use for both Airtable and EmailJS.</p></div></div>
-    <div class="ss"><div class="sn2">2</div><div class="sb2"><strong>Create Airtable base "Form K Submissions", table "Submissions"</strong>
-      <p>Sign up at <a href="https://airtable.com" target="_blank">airtable.com</a>. Add these fields:</p>
-      <table class="ft"><tr><th>Field name (exact)</th><th>Type</th></tr>
-        <tr><td>Tenants</td><td>Long text</td></tr><tr><td>Primary Email</td><td>Email</td></tr>
-        <tr><td>Owner Name</td><td>Single line text</td></tr><tr><td>Owner Email</td><td>Email</td></tr>
-        <tr><td>Unit Number</td><td>Single line text</td></tr><tr><td>Tenancy Start</td><td>Date</td></tr>
-        <tr><td>Owner Address</td><td>Single line text</td></tr><tr><td>Sign Date</td><td>Date</td></tr>
-        <tr><td>Pets</td><td>Single line text</td></tr><tr><td>Vehicle</td><td>Single line text</td></tr>
-        <tr><td>Submitted At</td><td>Single line text</td></tr><tr><td>Tenant Count</td><td>Number</td></tr>
-        <tr><td>Status</td><td>Single line text</td></tr><tr><td>Both Signed</td><td>Checkbox</td></tr>
-      </table>
-    </div></div>
-    <div class="ss"><div class="sn2">3</div><div class="sb2"><strong>Set up Airtable email notification</strong><p>Automations → New automation. Trigger: record matches conditions → Both Signed = checked. Action: Send email → all council member emails.</p></div></div>
-    <div class="ss"><div class="sn2">4</div><div class="sb2"><strong>Get Base ID and Personal Access Token</strong><p>Base ID from URL (starts with <code>app</code>). Token at <a href="https://airtable.com/create/tokens" target="_blank">airtable.com/create/tokens</a> → scopes: data.records:write + data.records:read.</p></div></div>
-    <div class="g2 mt"><div class="fld"><label>Airtable Base ID</label><input id="cfgBase" placeholder="appXXXXXXXXXXXXXX"></div><div class="fld"><label>Table name</label><input id="cfgTable" placeholder="Submissions"></div></div>
-    <div class="g1 mt"><div class="fld"><label>Personal Access Token</label><input id="cfgPat" type="password" placeholder="patXXXXXXXXXXXXXX"></div></div>
+    <div id="connBanner" class="al aok" style="margin-bottom:14px">Connected. Submissions will be saved to Airtable.</div>
+    <div class="g2">
+      <div class="fld"><label>Airtable Base ID</label><input id="cfgBase" placeholder="appXXXXXXXXXXXXXX"></div>
+      <div class="fld"><label>Table name</label><input id="cfgTable" placeholder="Submissions"></div>
+    </div>
+    <div class="g1 mt">
+      <div class="fld"><label>Personal Access Token</label><input id="cfgPat" type="password" placeholder="patXXXXXXXXXXXXXX"></div>
+    </div>
+    <div class="g1 mt">
+      <div class="fld"><label>This form's URL</label><input id="cfgUrl" placeholder="https://inforivendelleps87.github.io/Tenant_Form_K/"></div>
+    </div>
     <div class="div"></div>
-    <div class="ct">EmailJS — sends emails between parties</div>
-    <div class="ss"><div class="sn2">5</div><div class="sb2"><strong>Sign up at emailjs.com with the shared Gmail</strong><p>Free = 200 emails/month. Connect Gmail under Email Services. Copy your Service ID.</p></div></div>
-    <div class="ss"><div class="sn2">6</div><div class="sb2"><strong>Create two email templates</strong>
-      <p><strong>Template 1 — to tenant:</strong> <code>{{tenant_name}}</code>, <code>{{lot}}</code>, <code>{{owner_name}}</code>, <code>{{signing_link}}</code><br><br>
-      <strong>Template 2 — to owner (countersign):</strong> <code>{{owner_name}}</code>, <code>{{tenant_names}}</code>, <code>{{lot}}</code>, <code>{{countersign_link}}</code><br><br>
-      Get Public Key from Account → General.</p>
-    </div></div>
-    <div class="g2 mt"><div class="fld"><label>EmailJS Service ID</label><input id="cfgSvc" placeholder="service_xxxxxxx"></div><div class="fld"><label>EmailJS Public Key</label><input id="cfgKey" placeholder="XXXXXXXXXXXXXXXXXXXX"></div></div>
-    <div class="g2 mt"><div class="fld"><label>Template ID — to tenant</label><input id="cfgTT" placeholder="template_xxxxxxx"></div><div class="fld"><label>Template ID — to owner</label><input id="cfgTO" placeholder="template_xxxxxxx"></div></div>
-    <div class="g1 mt"><div class="fld"><label>This form's Netlify URL</label><input id="cfgUrl" placeholder="https://eps87-formk.netlify.app"></div></div>
+    <div class="ct">Document links — shown to tenants for review</div>
+    <div class="g1">
+      <div class="fld"><label>Bylaws document URL</label><input id="cfgBylaws" placeholder="https://drive.google.com/..."></div>
+    </div>
+    <div class="g1 mt">
+      <div class="fld"><label>Parking Rule document URL</label><input id="cfgParking" placeholder="https://drive.google.com/..."></div>
+    </div>
+    <div class="g1 mt">
+      <div class="fld"><label>Exterior Installation Rule document URL</label><input id="cfgExterior" placeholder="https://drive.google.com/..."></div>
+    </div>
     <div style="display:flex;gap:8px;align-items:center;margin-top:16px;flex-wrap:wrap">
       <button class="btn bp" onclick="saveConfig()">Save &amp; test connection</button>
       <button class="btn bsm bd" onclick="clearConfig()">Clear credentials</button>
       <span id="testSt" style="font-size:12px;color:var(--t2)"></span>
     </div>
+    <div class="div"></div>
+    <div class="ct">Make.com setup instructions</div>
+    <p style="font-size:12px;color:var(--t2);line-height:1.7;margin-bottom:12px">Make.com handles all email sending automatically. Create these 3 scenarios in Make.com:</p>
+    <div class="ss"><div class="sn2">1</div><div class="sb2"><strong>Tenant signing email</strong><p>Trigger: Airtable — Watch Records (new record created)<br>Action: Gmail — Send email<br>To: Tenant Email · Subject: Please sign Form K — Unit [Unit Number]<br>Body: include Tenant Name and Tenant Signing Links field</p></div></div>
+    <div class="ss"><div class="sn2">2</div><div class="sb2"><strong>Owner countersign email</strong><p>Trigger: Airtable — Watch Records (filter: Tenants Signed Count = Tenant Count)<br>Action: Gmail — Send email<br>To: Owner Email · Subject: Please countersign Form K — Unit [Unit Number]<br>Body: include Owner Name and Owner Signing Link field</p></div></div>
+    <div class="ss"><div class="sn2">3</div><div class="sb2"><strong>Council notification</strong><p>Trigger: Airtable — Watch Records (filter: Both Signed = checked)<br>Action: Gmail — Send email<br>To: info@rivendelleps87.ca and president@rivendelleps87.ca<br>Body: Unit Number, Tenants, Owner Name, Owner Email</p></div></div>
   </div>
 </div>
+
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 var C={},subs=[],sig={oSig:null,tSig:null},drw={},pf=null,petN=0,hasPets=false,tn=0,curTi=null;
 
@@ -370,18 +366,14 @@ function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 function loadCfg(){
   try{C=JSON.parse(localStorage.getItem('fk_c')||'{}');}catch(e){C={};}
   sv('cfgBase',C.base);sv('cfgTable',C.tbl);sv('cfgPat',C.pat);
-  sv('cfgSvc',C.svc);sv('cfgKey',C.key);sv('cfgTT',C.tt);sv('cfgTO',C.to);
-  sv('cfgUrl',C.url);sv('cfgBylaws',C.bylaws);sv('cfgParking',C.parking);
+  sv('cfgUrl',C.url);sv('cfgBylaws',C.bylaws);sv('cfgParking',C.parking);sv('cfgExterior',C.exterior);
   updUI();updLinks();
-  if(C.key){try{emailjs.init(C.key);}catch(e){}}
 }
 
-function saveCfg(){
+function saveConfig(){
   C.base=gv('cfgBase');C.tbl=gv('cfgTable')||'Submissions';C.pat=gv('cfgPat');
-  C.svc=gv('cfgSvc');C.key=gv('cfgKey');C.tt=gv('cfgTT');C.to=gv('cfgTO');
-  C.url=gv('cfgUrl').replace(/\/$/,'');C.bylaws=gv('cfgBylaws');C.parking=gv('cfgParking');
+  C.url=gv('cfgUrl').replace(/\/$/,'');C.bylaws=gv('cfgBylaws');C.parking=gv('cfgParking');C.exterior=gv('cfgExterior');
   localStorage.setItem('fk_c',JSON.stringify(C));
-  if(C.key){try{emailjs.init(C.key);}catch(e){}}
   updLinks();
   if(!C.base||!C.pat){setTS('Enter Base ID and token.',false);return;}
   setTS('<span class="spin"></span>Testing...',null);
@@ -394,19 +386,19 @@ function saveCfg(){
 function clearConfig(){
   if(!confirm('Clear all credentials?'))return;
   C={};localStorage.removeItem('fk_c');
-  ['cfgBase','cfgTable','cfgPat','cfgSvc','cfgKey','cfgTT','cfgTO','cfgUrl','cfgBylaws','cfgParking'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
+  ['cfgBase','cfgTable','cfgPat','cfgUrl','cfgBylaws','cfgParking','cfgExterior'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
   updUI();setTS('Cleared.',null);
 }
 
 function hasCfg(){return !!(C.base&&C.pat);}
 function updUI(){
-  var tag=document.getElementById('connTag'),w=document.getElementById('warnCfg'),b=document.getElementById('connBanner');
-  if(hasCfg()){tag.textContent='Connected';tag.style.cssText='background:var(--bgs);color:var(--ts);border-color:var(--brs)';w.style.display='none';b.style.display='block';}
-  else{tag.textContent='Not connected';tag.style.cssText='';w.style.display='block';b.style.display='none';}
+  var tag=document.getElementById('connTag'),b=document.getElementById('connBanner');
+  if(hasCfg()){tag.textContent='Connected';tag.style.cssText='background:var(--bgs);color:var(--ts);border-color:var(--brs)';b.style.display='block';}
+  else{tag.textContent='Not connected';tag.style.cssText='';b.style.display='none';}
 }
 function updLinks(){
-  var bl=document.getElementById('bylawLink'),pk=document.getElementById('parkingLink');
-  if(bl)bl.href=C.bylaws||'#';if(pk)pk.href=C.parking||'#';
+  var bl=document.getElementById('bylawLink'),pk=document.getElementById('parkingLink'),ex=document.getElementById('exteriorLink');
+  if(bl)bl.href=C.bylaws||'#';if(pk)pk.href=C.parking||'#';if(ex)ex.href=C.exterior||'#';
 }
 function setTS(m,ok){var e=document.getElementById('testSt');e.innerHTML=m;e.style.color=ok===true?'var(--ts)':ok===false?'var(--td)':'var(--t2)';}
 
@@ -420,8 +412,7 @@ function showTab(t){
 }
 
 function addTenant(){
-  tn++;
-  var n=tn;
+  tn++;var n=tn;
   var div=document.createElement('div');
   div.className='tblock';div.id='tb_'+n;
   div.innerHTML='<div class="tblock-hd"><span class="tnum">Tenant '+n+'</span>'+(n>1?'<button class="btn bsm bd" onclick="rmTenant('+n+')">Remove</button>':'')+'</div>'+
@@ -436,8 +427,7 @@ function rmTenant(n){var e=document.getElementById('tb_'+n);if(e)e.remove();}
 function getTenants(){
   var out=[];
   for(var i=1;i<=tn;i++){
-    var ne=document.getElementById('tN_'+i);
-    if(!ne)continue;
+    var ne=document.getElementById('tN_'+i);if(!ne)continue;
     var nm=ne.value.trim(),em=(document.getElementById('tE_'+i)||{}).value||'',ph=(document.getElementById('tP_'+i)||{}).value||'';
     if(nm)out.push({name:nm,email:em.toLowerCase().trim(),phone:ph.trim(),signed:false});
   }
@@ -514,55 +504,82 @@ function setBtn(id,loading,txt){var b=document.getElementById(id);if(!b)return;b
 function atU(){return'https://api.airtable.com/v0/'+C.base+'/'+encodeURIComponent(C.tbl);}
 function atH(){return{'Authorization':'Bearer '+C.pat,'Content-Type':'application/json'};}
 
-function sendEmail(tpl,params,cb){
-  if(!C.svc||!C.key||!tpl){cb(false,'EmailJS not configured');return;}
-  emailjs.send(C.svc,tpl,params).then(function(){cb(true);}).catch(function(e){cb(false,e.text||String(e));});
-}
-
 function submitOwner(){
   var tenants=getTenants();
   var miss=[];
   if(!gv('lot'))miss.push('Unit number');
   if(!gv('startDate'))miss.push('Tenancy start date');
   if(tenants.length===0)miss.push('At least one tenant');
-  tenants.forEach(function(t,i){if(!t.name)miss.push('Tenant '+(i+1)+' name');if(!t.email)miss.push('Tenant '+(i+1)+' email');if(!t.phone)miss.push('Tenant '+(i+1)+' cell phone');});
-  if(!gv('vMake'))miss.push('Vehicle make');
-  if(!gv('vPlate'))miss.push('Vehicle licence plate');
+  tenants.forEach(function(t,i){
+    if(!t.name)miss.push('Tenant '+(i+1)+' name');
+    if(!t.email)miss.push('Tenant '+(i+1)+' email');
+    if(!t.phone)miss.push('Tenant '+(i+1)+' cell phone');
+  });
   if(!gv('ownerName'))miss.push('Owner name');
   if(!gv('ownerEmail'))miss.push('Owner email');
+  if(!gv('vMake'))miss.push('Vehicle make');
+  if(!gv('vPlate'))miss.push('Vehicle licence plate');
   if(miss.length){showAl('ownerErr','Please complete: '+miss.join(', ')+'.');return;}
 
-  var fid='fk_'+Date.now();
+  var baseUrl=C.url||window.location.href.split('?')[0];
   var veh=[gv('vMake'),gv('vModel'),gv('vColor'),gv('vPlate')].filter(Boolean).join(' · ')||'None';
-  var fd={id:fid,created:new Date().toISOString(),lot:gv('lot'),startDate:gv('startDate'),
-    tenants:tenants,ownerName:gv('ownerName'),ownerEmail:gv('ownerEmail').toLowerCase(),
-    ownerAddress:gv('ownerAddress'),pets:getPets(),vehicle:veh,status:'awaiting_tenants'};
 
+  // Build signing links for each tenant
+  var fid='fk_'+Date.now();
+  var tenantLinks=tenants.map(function(_,i){return baseUrl+'?step=tenant&id='+fid+'&ti='+i;});
+  var ownerLink=baseUrl+'?step=countersign&id='+fid;
+
+  // Build tenant summary string
+  var tsum=tenants.map(function(t,i){return'Tenant '+(i+1)+': '+t.name+' <'+t.email+'>'+(t.phone?' '+t.phone:'');}).join('\n');
+
+  var fields={
+    'Tenants':tsum,
+    'Primary Email':tenants[0]&&tenants[0].email||'',
+    'Owner Name':gv('ownerName'),
+    'Owner Email':gv('ownerEmail').toLowerCase(),
+    'Unit Number':gv('lot'),
+    'Owner Address':gv('ownerAddress'),
+    'Submitted At':new Date().toISOString(),
+    'Pets':getPets(),
+    'Vehicle':veh,
+    'Tenant Count':tenants.length,
+    'Tenant Signing Links':tenantLinks.join('\n'),
+    'Owner Signing Link':ownerLink,
+    'Bylaws URL':C.bylaws||'',
+    'Parking URL':C.parking||'',
+    'Exterior URL':C.exterior||'',
+    'Tenants Signed Count':0,
+    'Status':'Awaiting tenant signatures',
+    'Both Signed':false
+  };
+  if(gv('startDate'))fields['Tenancy Start']=gv('startDate');
+
+  // Save pending form locally for signing steps
+  var fd=Object.assign({id:fid,created:new Date().toISOString(),tenants:tenants,ownerLink:ownerLink,tenantLinks:tenantLinks},fields);
   var pend=JSON.parse(localStorage.getItem('fk_p')||'{}');
-  pend[fid]=fd;localStorage.setItem('fk_p',JSON.stringify(pend));pf=fd;
+  pend[fid]=fd;localStorage.setItem('fk_p',JSON.stringify(pend));
 
-  setBtn('ownerBtn',true,'Sending...');
-  var base=C.url||window.location.href.split('?')[0];
-  var links=tenants.map(function(_,i){return base+'?step=tenant&id='+fid+'&ti='+i;});
+  setBtn('ownerBtn',true,'Saving...');
 
-  if(C.svc&&C.key&&C.tt){
-    var sent=0,failed=[];
-    tenants.forEach(function(t,i){
-      sendEmail(C.tt,{tenant_name:t.name,tenant_email:t.email,lot:fd.lot,address:'700 Center Street, Revelstoke BC — Unit '+fd.lot,owner_name:fd.ownerName,signing_link:links[i]},
-        function(ok,err){
-          if(!ok)failed.push(t.name+(err?' ('+err+')':''));
-          sent++;
-          if(sent===tenants.length){
-            setBtn('ownerBtn',false,'Send signing links to tenants →');
-            if(!failed.length){showAl('ownerOk');resetOwner();}
-            else{var m='Some emails failed: '+failed.join('; ')+'. Share links manually:';links.forEach(function(l,i){m+='<br>Tenant '+(i+1)+' ('+esc(tenants[i].name)+'): '+l;});showAl('ownerErr',m);}
-          }
-        });
-    });
+  if(hasCfg()){
+    fetch(atU(),{method:'POST',headers:atH(),body:JSON.stringify({records:[{fields:fields}]})})
+      .then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d};});})
+      .then(function(r){
+        setBtn('ownerBtn',false,'Submit form →');
+        if(r.ok){
+          // Store Airtable record ID for later updates
+          var pend2=JSON.parse(localStorage.getItem('fk_p')||'{}');
+          if(pend2[fid])pend2[fid].atId=r.d.records&&r.d.records[0]&&r.d.records[0].id;
+          localStorage.setItem('fk_p',JSON.stringify(pend2));
+          showAl('ownerOk');
+          resetOwner();
+        }else{showAl('ownerErr','Airtable error: '+(r.d.error&&r.d.error.message||'Check Setup tab.'));}
+      }).catch(function(){setBtn('ownerBtn',false,'Submit form →');showAl('ownerErr','Network error. Check your connection.');});
   }else{
-    setBtn('ownerBtn',false,'Send signing links to tenants →');
-    var m='EmailJS not configured. Share these links manually:';
-    links.forEach(function(l,i){m+='<br>Tenant '+(i+1)+' ('+esc(tenants[i].name)+'): '+l;});
+    setBtn('ownerBtn',false,'Submit form →');
+    // No Airtable — show links manually
+    var m='Airtable not configured. Share these links manually:';
+    tenants.forEach(function(t,i){m+='<br>'+esc(t.name)+': '+tenantLinks[i];});
     showAl('ownerErr',m);
   }
 }
@@ -580,14 +597,21 @@ function loadTenantStep(fid,ti){
   if(!f||!f.tenants||!f.tenants[ti]){el.innerHTML='<span style="color:var(--td)">Form not found. Please contact your landlord.</span>';return;}
   pf=f;curTi=parseInt(ti);
   var t=f.tenants[curTi];
+
+  // Set document links from Airtable stored URLs
+  var bl=document.getElementById('bylawLink'),pk=document.getElementById('parkingLink'),ex=document.getElementById('exteriorLink');
+  if(bl)bl.href=f['Bylaws URL']||C.bylaws||'#';
+  if(pk)pk.href=f['Parking URL']||C.parking||'#';
+  if(ex)ex.href=f['Exterior URL']||C.exterior||'#';
+
   var html='<b>Signing as:</b> <strong>'+esc(t.name)+'</strong>'+(f.tenants.length>1?' (Tenant '+(curTi+1)+' of '+f.tenants.length+')':'')+'<br>'+
-    '<b>Unit:</b> '+esc(f.lot)+' — 700 Center Street, Revelstoke BC<br>'+
-    '<b>Tenancy start:</b> '+esc(f.startDate)+'<br><b>Owner:</b> '+esc(f.ownerName);
-  if(f.pets&&f.pets!=='None')html+='<br><b>Pets declared:</b> '+esc(f.pets);
-  if(f.vehicle&&f.vehicle!=='None')html+='<br><b>Vehicle:</b> '+esc(f.vehicle);
+    '<b>Unit:</b> '+esc(f['Unit Number'])+' — 700 Center Street, Revelstoke BC<br>'+
+    '<b>Tenancy start:</b> '+esc(f['Tenancy Start']||'')+'<br>'+
+    '<b>Owner:</b> '+esc(f['Owner Name']);
+  if(f['Pets']&&f['Pets']!=='None')html+='<br><b>Pets declared:</b> '+esc(f['Pets']);
+  if(f['Vehicle']&&f['Vehicle']!=='None')html+='<br><b>Vehicle:</b> '+esc(f['Vehicle']);
   if(f.tenants.length>1){var others=f.tenants.filter(function(_,i){return i!==curTi;}).map(function(x){return esc(x.name);});html+='<br><b>Other tenants:</b> '+others.join(', ');}
   el.innerHTML=html;
-  updLinks();
   if(t.signed){document.getElementById('tenantBtn').disabled=true;document.getElementById('tenantBtn').textContent='Already signed';el.innerHTML+='<br><span style="color:var(--ts);font-weight:500">You have already signed this form.</span>';}
 }
 
@@ -599,39 +623,44 @@ function toggleChk(cbId,ciId){
 function submitTenant(){
   if(pf===null||curTi===null){showAl('tenantErr','Form data not found. Use the link from your email.');return;}
   var miss=[];
-  if(!document.getElementById('cbBylaw').checked)miss.push('Please agree to the Strata Bylaws');
-  if(!document.getElementById('cbParking').checked)miss.push('Please agree to the Parking Rules');
+  if(!document.getElementById('cbBylaw').checked)miss.push('Please agree to the Strata Corporation Bylaws');
+  if(!document.getElementById('cbParking').checked)miss.push('Please agree to the Parking Rule');
+  if(!document.getElementById('cbExterior').checked)miss.push('Please agree to the Exterior Installation Rule');
   if(!sig.tSig)miss.push('Your signature is required');
   if(miss.length){showAl('tenantErr',miss.join(' · '));return;}
 
   setBtn('tenantBtn',true,'Saving...');
+
   var pend=JSON.parse(localStorage.getItem('fk_p')||'{}');
   var f=pend[pf.id];
   if(f&&f.tenants&&f.tenants[curTi]){
     f.tenants[curTi].signed=true;f.tenants[curTi].signedAt=new Date().toISOString();
-    var allDone=f.tenants.every(function(t){return t.signed;});
-    f.status=allDone?'awaiting_owner':'awaiting_tenants';
+    var signedCount=f.tenants.filter(function(t){return t.signed;}).length;
+    var allDone=signedCount===f.tenants.length;
+    f.status=allDone?'Awaiting owner countersignature':'Awaiting tenant signatures';
     pend[pf.id]=f;localStorage.setItem('fk_p',JSON.stringify(pend));pf=f;
+
+    // Update Airtable with signed count
+    if(hasCfg()&&f.atId){
+      var updateFields={'Tenants Signed Count':signedCount};
+      if(allDone)updateFields['Status']='Awaiting owner countersignature';
+      fetch('https://api.airtable.com/v0/'+C.base+'/'+encodeURIComponent(C.tbl)+'/'+f.atId,
+        {method:'PATCH',headers:atH(),body:JSON.stringify({fields:updateFields})})
+        .catch(function(){});
+    }
   }
 
   var t=pf.tenants[curTi];
   var remaining=pf.tenants.filter(function(x){return!x.signed;});
   var allDone=remaining.length===0;
-  var base=C.url||window.location.href.split('?')[0];
-  var csLink=base+'?step=countersign&id='+pf.id;
 
   setBtn('tenantBtn',false,'Submit my signature');
 
   if(allDone){
-    var names=pf.tenants.map(function(x){return x.name;}).join(', ');
-    var msg='Thank you, '+esc(t.name)+'! All '+pf.tenants.length+' tenant(s) have signed. The owner has been notified to countersign.';
-    if(C.svc&&C.key&&C.to){
-      sendEmail(C.to,{owner_name:pf.ownerName,owner_email:pf.ownerEmail,tenant_names:names,lot:pf.lot,countersign_link:csLink},
-        function(ok,err){if(ok){showAl('tenantOk',msg);}else{showAl('tenantErr','All signed, but owner email failed ('+err+'). Share this link with the owner: '+csLink);}});
-    }else{showAl('tenantErr','All tenants signed. EmailJS not configured — share this link with the owner: '+csLink);}
+    showAl('tenantOk','Thank you, '+esc(t.name)+'! All tenants have signed. The owner will be notified by email to countersign.');
   }else{
     var rem=remaining.map(function(x){return esc(x.name);}).join(', ');
-    showAl('tenantOk','Thank you, '+esc(t.name)+'! Your signature saved. Still waiting for: '+rem+'.');
+    showAl('tenantOk','Thank you, '+esc(t.name)+'! Your signature has been saved. Still waiting for: '+rem+'.');
   }
 }
 
@@ -647,11 +676,12 @@ function fillCS(){
   if(!pf){el.innerHTML='<span style="color:var(--t3)">No form loaded. Use the link from your email.</span>';return;}
   var f=pf;
   var names=f.tenants.map(function(t){return t.name;}).join(', ');
-  el.innerHTML='<b>Unit:</b> '+esc(f.lot)+' — 700 Center Street, Revelstoke BC<br>'+
-    '<b>Tenancy start:</b> '+esc(f.startDate)+'<br><b>Tenant(s):</b> '+esc(names)+'<br>'+
-    '<b>Owner:</b> '+esc(f.ownerName)+' · '+esc(f.ownerEmail)+
-    (f.pets&&f.pets!=='None'?'<br><b>Pets:</b> '+esc(f.pets):'')+
-    (f.vehicle&&f.vehicle!=='None'?'<br><b>Vehicle:</b> '+esc(f.vehicle):'');
+  el.innerHTML='<b>Unit:</b> '+esc(f['Unit Number'])+' — 700 Center Street, Revelstoke BC<br>'+
+    '<b>Tenancy start:</b> '+esc(f['Tenancy Start']||'')+'<br>'+
+    '<b>Tenant(s):</b> '+esc(names)+'<br>'+
+    '<b>Owner:</b> '+esc(f['Owner Name'])+' · '+esc(f['Owner Email'])+
+    (f['Pets']&&f['Pets']!=='None'?'<br><b>Pets:</b> '+esc(f['Pets']):'')+
+    (f['Vehicle']&&f['Vehicle']!=='None'?'<br><b>Vehicle:</b> '+esc(f['Vehicle']):'');
   var stEl=document.getElementById('tSignSt');if(!stEl)return;
   var stH='';
   f.tenants.forEach(function(t,i){
@@ -669,14 +699,15 @@ function submitCS(){
   if(!sig.oSig){showAl('csErr','Please provide your signature.');return;}
   setBtn('csBtn',true,'Submitting...');
   var now=new Date().toISOString();
-  var sub=Object.assign({},pf,{submitted:now,signDate:gv('signDate')||now.split('T')[0],ownerSigned:true,status:'complete'});
+  var signDate=gv('signDate')||now.split('T')[0];
 
   function finish(ok,err){
     setBtn('csBtn',false,'Complete &amp; submit to strata →');
     if(ok){
       showAl('csOk');
       var pend=JSON.parse(localStorage.getItem('fk_p')||'{}');
-      delete pend[sub.id];localStorage.setItem('fk_p',JSON.stringify(pend));
+      var sub=Object.assign({},pf,{submitted:now,signDate:signDate,ownerSigned:true,status:'Complete'});
+      delete pend[pf.id];localStorage.setItem('fk_p',JSON.stringify(pend));
       pf=null;sig.oSig=null;updSig('oSig');
       var ss=JSON.parse(localStorage.getItem('fk_s')||'[]');ss.unshift(sub);
       try{localStorage.setItem('fk_s',JSON.stringify(ss.slice(0,200)));}catch(e){}
@@ -684,21 +715,36 @@ function submitCS(){
   }
 
   if(hasCfg()){
-    var names=sub.tenants.map(function(t){return t.name;}).join(', ');
-    var tsum=sub.tenants.map(function(t,i){return'Tenant '+(i+1)+': '+t.name+(t.email?' <'+t.email+'>':'')+(t.phone?' '+t.phone:'');}).join('\n');
-    var fields={'Tenants':tsum,'Primary Email':sub.tenants[0]&&sub.tenants[0].email||'',
-      'Owner Name':sub.ownerName,'Owner Email':sub.ownerEmail,'Unit Number':sub.lot,
-      'Owner Address':sub.ownerAddress,'Submitted At':sub.submitted,'Pets':sub.pets,
-      'Vehicle':sub.vehicle,'Tenant Count':sub.tenants.length,'Status':'Complete','Both Signed':true};
-    if(sub.startDate)fields['Tenancy Start']=sub.startDate;
-    if(sub.signDate)fields['Sign Date']=sub.signDate;
-    fetch(atU(),{method:'POST',headers:atH(),body:JSON.stringify({records:[{fields:fields}]})})
-      .then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d};});})
-      .then(function(r){finish(r.ok,r.d.error&&r.d.error.message);})
-      .catch(function(){finish(false,'Network error');});
+    var updateFields={'Status':'Complete','Both Signed':true,'Owner Countersigned':true};
+    if(signDate)updateFields['Sign Date']=signDate;
+
+    if(pf.atId){
+      fetch('https://api.airtable.com/v0/'+C.base+'/'+encodeURIComponent(C.tbl)+'/'+pf.atId,
+        {method:'PATCH',headers:atH(),body:JSON.stringify({fields:updateFields})})
+        .then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d};});})
+        .then(function(r){finish(r.ok,r.d.error&&r.d.error.message);})
+        .catch(function(){finish(false,'Network error');});
+    }else{
+      // No Airtable record ID — create new record
+      var allFields=Object.assign({},updateFields,{
+        'Tenants':pf['Tenants']||'','Primary Email':pf['Primary Email']||'',
+        'Owner Name':pf['Owner Name']||'','Owner Email':pf['Owner Email']||'',
+        'Unit Number':pf['Unit Number']||'','Owner Address':pf['Owner Address']||'',
+        'Submitted At':now,'Pets':pf['Pets']||'','Vehicle':pf['Vehicle']||'',
+        'Tenant Count':pf.tenants?pf.tenants.length:1,
+        'Tenant Signing Links':pf['Tenant Signing Links']||'',
+        'Owner Signing Link':pf['Owner Signing Link']||''
+      });
+      if(pf['Tenancy Start'])allFields['Tenancy Start']=pf['Tenancy Start'];
+      fetch(atU(),{method:'POST',headers:atH(),body:JSON.stringify({records:[{fields:allFields}]})})
+        .then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d};});})
+        .then(function(r){finish(r.ok,r.d.error&&r.d.error.message);})
+        .catch(function(){finish(false,'Network error');});
+    }
   }else{
-    var ss=JSON.parse(localStorage.getItem('fk_s')||'[]');ss.unshift(sub);
-    try{localStorage.setItem('fk_s',JSON.stringify(ss.slice(0,200)));}catch(e){}
+    var ss=JSON.parse(localStorage.getItem('fk_s')||'[]');
+    var sub2=Object.assign({},pf,{submitted:now,signDate:signDate,ownerSigned:true,status:'Complete'});
+    ss.unshift(sub2);try{localStorage.setItem('fk_s',JSON.stringify(ss.slice(0,200)));}catch(e){}
     finish(true);
   }
 }
@@ -715,10 +761,11 @@ function loadAirtable(){
       if(!data.records){alert('Could not load.');return;}
       subs=data.records.map(function(r){
         var f=r.fields;
-        return{id:r.id,submitted:f['Submitted At']||r.createdTime,lot:f['Unit Number']||'',
-          tenantsStr:f['Tenants']||'',primaryEmail:f['Primary Email']||'',
-          ownerName:f['Owner Name']||'',ownerEmail:f['Owner Email']||'',
-          startDate:f['Tenancy Start']||'',pets:f['Pets']||'',vehicle:f['Vehicle']||'',
+        return{id:r.id,submitted:f['Submitted At']||r.createdTime,
+          lot:f['Unit Number']||'',tenantsStr:f['Tenants']||'',
+          primaryEmail:f['Primary Email']||'',ownerName:f['Owner Name']||'',
+          ownerEmail:f['Owner Email']||'',startDate:f['Tenancy Start']||'',
+          pets:f['Pets']||'',vehicle:f['Vehicle']||'',
           tenantCount:f['Tenant Count']||1,ownerSigned:!!f['Both Signed'],status:f['Status']||''};
       });
       try{localStorage.setItem('fk_s',JSON.stringify(subs.slice(0,200)));}catch(e){}
@@ -728,10 +775,7 @@ function loadAirtable(){
 
 function renderSubs(){
   var emails=[];
-  subs.forEach(function(s){
-    if(s.primaryEmail)emails.push(s.primaryEmail);if(s.ownerEmail)emails.push(s.ownerEmail);
-    if(s.tenants)s.tenants.forEach(function(t){if(t.email)emails.push(t.email);});
-  });
+  subs.forEach(function(s){if(s.primaryEmail)emails.push(s.primaryEmail);if(s.ownerEmail)emails.push(s.ownerEmail);});
   var unique=[...new Set(emails)];
   document.getElementById('mT').textContent=subs.length;
   document.getElementById('mC').textContent=subs.filter(function(s){return s.ownerSigned;}).length;
@@ -744,7 +788,7 @@ function renderSubs(){
   subs.forEach(function(s){
     var signed=s.ownerSigned;
     var date=s.submitted?new Date(s.submitted).toLocaleDateString('en-CA'):'';
-    var td=s.tenantsStr?s.tenantsStr.split('\n')[0]:(s.tenants&&s.tenants[0]?s.tenants[0].name:'—');
+    var td=s.tenantsStr?s.tenantsStr.split('\n')[0]:'—';
     var cnt=s.tenantCount||1;
     html+='<div class="sr"><div><div class="sn">'+esc(td)+(cnt>1?' <span style="font-size:11px;color:var(--t2);font-weight:400">+'+( cnt-1)+' more</span>':'')+'</div>'+
       '<div class="sdt">Unit '+esc(s.lot)+' · Owner: '+esc(s.ownerName)+'</div></div>'+
@@ -756,7 +800,7 @@ function renderSubs(){
 
 function copyEmails(){
   var emails=[];
-  subs.forEach(function(s){if(s.primaryEmail)emails.push(s.primaryEmail);if(s.ownerEmail)emails.push(s.ownerEmail);if(s.tenants)s.tenants.forEach(function(t){if(t.email)emails.push(t.email);});});
+  subs.forEach(function(s){if(s.primaryEmail)emails.push(s.primaryEmail);if(s.ownerEmail)emails.push(s.ownerEmail);});
   var unique=[...new Set(emails)];
   navigator.clipboard.writeText(unique.join('\n')).then(function(){alert('Copied '+unique.length+' emails.');}).catch(function(){prompt('Copy:',unique.join(', '));});
 }
@@ -776,11 +820,9 @@ function exportCSV(){
 function checkUrl(){
   var p=new URLSearchParams(window.location.search);
   var step=p.get('step'),id=p.get('id'),ti=p.get('ti');
-  if(step==='tenant'&&id){showTab('tenant');loadTenantStep(id,ti||0);}
+  if(step==='tenant'&&id){showTab('tenant');loadTenantStep(id,parseInt(ti)||0);}
   else if(step==='countersign'&&id){showTab('countersign');loadCSStep(id);}
 }
-
-function saveConfig(){saveCfg();}
 
 window.addEventListener('load',function(){
   loadCfg();loadLocal();

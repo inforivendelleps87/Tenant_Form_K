@@ -549,6 +549,7 @@ function submitOwner(){
     'Parking URL':C.parking||'',
     'Exterior URL':C.exterior||'',
     'Tenants Signed Count':0,
+    'Form ID':fid,
     'Status':'Awaiting tenant signatures',
     'Both Signed':false
   };
@@ -590,31 +591,70 @@ function resetOwner(){
   document.getElementById('petList').innerHTML='';petN=0;setPets(false);
 }
 
-function loadTenantStep(fid,ti){
-  var pend=JSON.parse(localStorage.getItem('fk_p')||'{}');
-  var f=pend[fid];
-  var el=document.getElementById('tSummary');
-  if(!f||!f.tenants||!f.tenants[ti]){el.innerHTML='<span style="color:var(--td)">Form not found. Please contact your landlord.</span>';return;}
+function renderTenantStep(f,ti){
   pf=f;curTi=parseInt(ti);
   var t=f.tenants[curTi];
-
-  // Set document links from Airtable stored URLs
+  var el=document.getElementById('tSummary');
   var bl=document.getElementById('bylawLink'),pk=document.getElementById('parkingLink'),ex=document.getElementById('exteriorLink');
   if(bl)bl.href=f['Bylaws URL']||C.bylaws||'#';
   if(pk)pk.href=f['Parking URL']||C.parking||'#';
   if(ex)ex.href=f['Exterior URL']||C.exterior||'#';
-
   var html='<b>Signing as:</b> <strong>'+esc(t.name)+'</strong>'+(f.tenants.length>1?' (Tenant '+(curTi+1)+' of '+f.tenants.length+')':'')+'<br>'+
     '<b>Unit:</b> '+esc(f['Unit Number'])+' — 700 Center Street, Revelstoke BC<br>'+
     '<b>Tenancy start:</b> '+esc(f['Tenancy Start']||'')+'<br>'+
     '<b>Owner:</b> '+esc(f['Owner Name']);
   if(f['Pets']&&f['Pets']!=='None')html+='<br><b>Pets declared:</b> '+esc(f['Pets']);
   if(f['Vehicle']&&f['Vehicle']!=='None')html+='<br><b>Vehicle:</b> '+esc(f['Vehicle']);
-  if(f.tenants.length>1){var others=f.tenants.filter(function(_,i){return i!==curTi;}).map(function(x){return esc(x.name);});html+='<br><b>Other tenants:</b> '+others.join(', ');}
+  if(f.tenants.length>1){var others=f.tenants.filter(function(_,i){return i!==parseInt(ti);}).map(function(x){return esc(x.name);});html+='<br><b>Other tenants:</b> '+others.join(', ');}
   el.innerHTML=html;
   if(t.signed){document.getElementById('tenantBtn').disabled=true;document.getElementById('tenantBtn').textContent='Already signed';el.innerHTML+='<br><span style="color:var(--ts);font-weight:500">You have already signed this form.</span>';}
 }
 
+function loadTenantStep(fid,ti){
+  var el=document.getElementById('tSummary');
+  el.innerHTML='<span style="color:var(--t2)">Loading form...</span>';
+  // Try local first
+  var pend=JSON.parse(localStorage.getItem('fk_p')||'{}');
+  var f=pend[fid];
+  if(f&&f.tenants&&f.tenants[ti]){renderTenantStep(f,ti);return;}
+  // Fetch from Airtable
+  if(!hasCfg()){el.innerHTML='<span style="color:var(--td)">Form not found. Please contact your landlord.</span>';return;}
+  fetch(atU()+'?filterByFormula='+encodeURIComponent('{Form ID}="'+fid+'"'),{headers:atH()})
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(!data.records||!data.records.length){el.innerHTML='<span style="color:var(--td)">Form not found. Please contact your landlord.</span>';return;}
+      var rec=data.records[0];var fields=rec.fields;
+      // Parse tenants from Tenants field
+      var tenantLines=(fields['Tenants']||'').split('\n');
+      var tenants=tenantLines.map(function(line){
+        var m=line.match(/Tenant \d+: (.+?) <(.+?)>/);
+        return m?{name:m[1],email:m[2],phone:'',signed:false}:{name:line,email:'',phone:'',signed:false};
+      }).filter(function(t){return t.name;});
+      var fd={id:fid,atId:rec.id,tenants:tenants,
+        'Unit Number':fields['Unit Number']||'',
+        'Tenancy Start':fields['Tenancy Start']||'',
+        'Owner Name':fields['Owner Name']||'',
+        'Owner Email':fields['Owner Email']||'',
+        'Pets':fields['Pets']||'None',
+        'Vehicle':fields['Vehicle']||'None',
+        'Bylaws URL':fields['Bylaws URL']||'',
+        'Parking URL':fields['Parking URL']||'',
+        'Exterior URL':fields['Exterior URL']||'',
+        'Tenant Count':fields['Tenant Count']||tenants.length,
+        'Tenants Signed Count':fields['Tenants Signed Count']||0,
+        'Tenant Signing Links':fields['Tenant Signing Links']||'',
+        'Owner Signing Link':fields['Owner Signing Link']||''
+      };
+      // Save locally for this session
+      var pend2=JSON.parse(localStorage.getItem('fk_p')||'{}');
+      pend2[fid]=fd;localStorage.setItem('fk_p',JSON.stringify(pend2));
+      if(!fd.tenants[ti]){el.innerHTML='<span style="color:var(--td)">Tenant not found. Please contact your landlord.</span>';return;}
+      renderTenantStep(fd,ti);
+    }).catch(function(){el.innerHTML='<span style="color:var(--td)">Could not load form. Please try again.</span>';});
+  var f2=pend[fid];
+  if(f2&&f2.tenants&&f2.tenants[ti]){renderTenantStep(f2,ti);return;}
+  // already handled above
+}
 function toggleChk(cbId,ciId){
   var cb=document.getElementById(cbId);
   document.getElementById(ciId).classList.toggle('chk',cb.checked);
@@ -665,10 +705,36 @@ function submitTenant(){
 }
 
 function loadCSStep(fid){
+  var el=document.getElementById('csSummary');
+  el.innerHTML='<span style="color:var(--t2)">Loading form...</span>';
   var pend=JSON.parse(localStorage.getItem('fk_p')||'{}');
   var f=pend[fid];
-  if(!f){document.getElementById('csSummary').innerHTML='<span style="color:var(--td)">Form not found.</span>';return;}
-  pf=f;fillCS();
+  if(f){pf=f;fillCS();return;}
+  if(!hasCfg()){el.innerHTML='<span style="color:var(--td)">Form not found.</span>';return;}
+  fetch(atU()+'?filterByFormula='+encodeURIComponent('{Form ID}="'+fid+'"'),{headers:atH()})
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(!data.records||!data.records.length){el.innerHTML='<span style="color:var(--td)">Form not found.</span>';return;}
+      var rec=data.records[0];var fields=rec.fields;
+      var tenantLines=(fields['Tenants']||'').split('\n');
+      var tenants=tenantLines.map(function(line){
+        var m=line.match(/Tenant \d+: (.+?) <(.+?)>/);
+        return m?{name:m[1],email:m[2],phone:'',signed:false}:{name:line,email:'',phone:'',signed:false};
+      }).filter(function(t){return t.name;});
+      var fd={id:fid,atId:rec.id,tenants:tenants,
+        'Unit Number':fields['Unit Number']||'',
+        'Tenancy Start':fields['Tenancy Start']||'',
+        'Owner Name':fields['Owner Name']||'',
+        'Owner Email':fields['Owner Email']||'',
+        'Pets':fields['Pets']||'None','Vehicle':fields['Vehicle']||'None',
+        'Tenant Count':fields['Tenant Count']||tenants.length,
+        'Tenants Signed Count':fields['Tenants Signed Count']||0,
+        'Owner Signing Link':fields['Owner Signing Link']||''
+      };
+      var pend2=JSON.parse(localStorage.getItem('fk_p')||'{}');
+      pend2[fid]=fd;localStorage.setItem('fk_p',JSON.stringify(pend2));
+      pf=fd;fillCS();
+    }).catch(function(){el.innerHTML='<span style="color:var(--td)">Could not load form. Please try again.</span>';});
 }
 
 function fillCS(){
